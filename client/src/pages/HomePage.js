@@ -699,13 +699,16 @@ const HomePage = () => {
       <hr className="my-12 border-t-2 border-gray-200 w-3/4 mx-auto" />
 
       {/* Premium Services Section */}
-      <section className="py-20 bg-neutral-50 text-neutral-900">
+      <section className="py-20 bg-neutral-50 text-neutral-900 relative overflow-hidden">
+        {/* Background Image */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M30 30c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10-10-4.5-10-10zm-20 0c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10-10-4.5-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            backgroundImage: `url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80')`
           }}
         ></div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-700/60"></div>
         <div className="relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -718,10 +721,10 @@ const HomePage = () => {
               <FaCrown className="mr-3 text-yellow-400 text-lg" />
               Premium Services
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
               Elevated Property Experience
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-white max-w-3xl mx-auto leading-relaxed">
               Take your property journey to the next level with our exclusive premium services
             </p>
           </motion.div>
@@ -736,7 +739,7 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-2 h-full">
+                <div className="relative bg-white/20 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:bg-white/30 transition-all duration-300 transform hover:-translate-y-2 h-full">
                   <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${service.color} rounded-t-2xl`}></div>
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl mb-6 bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <service.icon className="text-2xl text-white" />
@@ -744,12 +747,12 @@ const HomePage = () => {
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-yellow-400 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-300 mb-6 leading-relaxed">
+                  <p className="text-white mb-6 leading-relaxed">
                     {service.description}
                   </p>
                   <ul className="space-y-3 mb-8">
                     {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm text-gray-300">
+                      <li key={featureIndex} className="flex items-center text-sm text-white">
                         <FaCheckCircle className="mr-3 text-green-400 flex-shrink-0" />
                         {feature}
                       </li>
