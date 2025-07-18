@@ -2,6 +2,6 @@ FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
-COPY . .
+COPY server/ ./server/
 EXPOSE 5001
-CMD ["node", "index.js"] 
+CMD ["node", "server/index.js"] 

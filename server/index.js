@@ -67,21 +67,31 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Session configuration
-app.use(session({
+// Session configuration - only create if MongoDB URI is available
+let sessionConfig = {
   secret: process.env.SESSION_SECRET || 'pakproperty-secret',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    ttl: 24 * 60 * 60 // 1 day
-  }),
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 1 day
   }
-}));
+};
+
+// Only add MongoStore if MONGODB_URI is available
+if (process.env.MONGODB_URI) {
+  try {
+    sessionConfig.store = MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      ttl: 24 * 60 * 60 // 1 day
+    });
+  } catch (error) {
+    console.log('MongoStore creation failed, using memory store:', error.message);
+  }
+}
+
+app.use(session(sessionConfig));
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -123,6 +133,7 @@ app.listen(PORT, () => {
   console.log(`🚀 PakProperty server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 API URL: http://localhost:${PORT}/api`);
+  console.log(`📦 MongoDB Connected: ${process.env.MONGODB_URI ? 'Yes' : 'No'}`);
 });
 
 // Graceful shutdown

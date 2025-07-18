@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   mongo:
     image: mongo:6
@@ -7,16 +6,25 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
   server:
-    build: ./server
+    build:
+      context: .
+      dockerfile: server/Dockerfile
     restart: always
     ports:
       - "5001:5001"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/pakproperty
+      - MONGODB_URI=mongodb://mongo:27017/pakproperty
       - NODE_ENV=development
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
   client:
     build: ./client
     restart: always

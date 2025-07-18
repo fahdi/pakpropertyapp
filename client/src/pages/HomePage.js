@@ -55,6 +55,9 @@ const HomePage = () => {
     }
   );
 
+  console.log('DEBUG featuredProperties:', featuredProperties);
+  console.log('DEBUG isLoading:', isLoading);
+
   // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
