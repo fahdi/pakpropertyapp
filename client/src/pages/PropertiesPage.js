@@ -88,6 +88,10 @@ const PropertiesPage = () => {
   const totalPages = propertiesData?.pagination?.pages || 1;
   const currentPage = propertiesData?.pagination?.page || 1;
 
+
+
+
+
   // Handle filter changes
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
