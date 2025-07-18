@@ -478,7 +478,7 @@ const HomePage = () => {
                       <div className="h-48 bg-primary-500 relative flex items-center justify-center">
                         {property.images && property.images.length > 0 && property.images[0] ? (
                           <img
-                            src={property.images[0]}
+                            src={property.images[0].url}
                             alt={property.title}
                             loading="lazy"
                             className="w-full h-full object-cover"
