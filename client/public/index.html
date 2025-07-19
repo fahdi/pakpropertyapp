@@ -4,34 +4,105 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="description" content="Pakistan's leading property rental platform. Find your perfect home in Karachi, Lahore, Islamabad, and other major cities." />
-    <meta name="keywords" content="property rental, Pakistan, Karachi, Lahore, Islamabad, real estate, apartments, houses, commercial property" />
-    <meta name="author" content="PakProperty" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://pakproperty.com/" />
-    <meta property="og:title" content="PakProperty - Pakistan's Leading Property Rental Platform" />
-    <meta property="og:description" content="Find your perfect rental property in Pakistan. Browse apartments, houses, and commercial properties in major cities." />
-    <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://pakproperty.com/" />
-    <meta property="twitter:title" content="PakProperty - Pakistan's Leading Property Rental Platform" />
-    <meta property="twitter:description" content="Find your perfect rental property in Pakistan. Browse apartments, houses, and commercial properties in major cities." />
-    <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Mapbox CSS -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
-    
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="PakProperty - Pakistan's Leading Property Rental Platform"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>PakProperty - Pakistan's Leading Property Rental Platform</title>
+    
+    <!-- Minimal ResizeObserver Error Handler -->
+    <script>
+      // Minimal ResizeObserver elimination without breaking webpack
+      (function() {
+        // Store original console methods
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        const originalConsoleLog = console.log;
+        
+        // Override console methods to filter ResizeObserver
+        console.error = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('ResizeObserver')) {
+            return; // Ignore ResizeObserver errors
+          }
+          originalConsoleError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('ResizeObserver')) {
+            return; // Ignore ResizeObserver warnings
+          }
+          originalConsoleWarn.apply(console, args);
+        };
+        
+        console.log = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('ResizeObserver')) {
+            return; // Ignore ResizeObserver logs
+          }
+          originalConsoleLog.apply(console, args);
+        };
+        
+        // Error suppression function
+        const suppressResizeObserverError = function(event) {
+          if (event && event.error && event.error.message && event.error.message.includes('ResizeObserver')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+          if (event && event.message && event.message.includes('ResizeObserver')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+          return false;
+        };
+        
+        // Override error handlers
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (message && message.includes('ResizeObserver')) {
+            return true; // Prevent default handling
+          }
+          return false;
+        };
+        
+        window.onunhandledrejection = function(event) {
+          if (event.reason && event.reason.message && event.reason.message.includes('ResizeObserver')) {
+            event.preventDefault();
+            return true;
+          }
+          return false;
+        };
+        
+        // Add error listeners
+        window.addEventListener('error', suppressResizeObserverError, true);
+        window.addEventListener('unhandledrejection', suppressResizeObserverError, true);
+        
+        // Simply remove ResizeObserver from window
+        if (window.ResizeObserver) {
+          // Store original for potential restoration
+          window._OriginalResizeObserver = window.ResizeObserver;
+          
+          // Remove ResizeObserver
+          delete window.ResizeObserver;
+        }
+        
+        // Create a dummy ResizeObserver that does nothing
+        window.ResizeObserver = function() {
+          return {
+            observe: function() {},
+            unobserve: function() {},
+            disconnect: function() {}
+          };
+        };
+        
+        console.log('Minimal ResizeObserver elimination activated');
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

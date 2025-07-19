@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import api from '../utils/axios';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { useResizeObserverFix } from '../utils/useResizeObserverFix';
 import { 
   FaSearch, 
   FaMapMarkerAlt, 
@@ -41,6 +42,20 @@ const HomePage = () => {
     bedrooms: '',
     furnished: ''
   });
+
+  // Use the custom ResizeObserver fix hook
+  useResizeObserverFix();
+
+  // Additional stability measures for HomePage
+  useEffect(() => {
+    // Ensure stable DOM after component mounts
+    const timer = setTimeout(() => {
+      // Force a repaint to stabilize any ResizeObserver instances
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Fetch featured properties
   const { data: featuredProperties, isLoading } = useQuery(
@@ -189,6 +204,44 @@ const HomePage = () => {
       avatar: 'UA'
     }
   ];
+
+  // Optimized animation variants with reduced ResizeObserver impact
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
