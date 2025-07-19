@@ -7,6 +7,11 @@ const ProtectedRoute = ({ children, allowedRoles = [], requireVerification = fal
   const { user, isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  console.log('ProtectedRoute - user:', user);
+  console.log('ProtectedRoute - isAuthenticated:', isAuthenticated);
+  console.log('ProtectedRoute - loading:', loading);
+  console.log('ProtectedRoute - location:', location.pathname);
+
   // Show loading spinner while checking authentication
   if (loading) {
     return (

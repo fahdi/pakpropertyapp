@@ -31,11 +31,14 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         if (token) {
+          console.log('Checking auth with token:', token);
           const response = await api.get('/auth/me');
+          console.log('Auth check response:', response.data);
           setUser(response.data.data);
         }
       } catch (error) {
         console.error('Auth check failed:', error);
+        console.error('Auth check error response:', error.response?.data);
         logout();
       } finally {
         setLoading(false);
@@ -49,7 +52,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setLoading(true);
+      console.log('Making login request to:', '/auth/login');
       const response = await api.post('/auth/login', { email, password });
+      console.log('Login response:', response.data);
       
       const { token: newToken, user: userData } = response.data;
       
@@ -57,9 +62,14 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       localStorage.setItem('token', newToken);
       
+      console.log('User set:', userData);
+      console.log('Token set:', newToken);
+      console.log('isAuthenticated will be:', !!userData);
+      
       toast.success('Login successful!');
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
       const message = error.response?.data?.message || 'Login failed';
       toast.error(message);
       return { success: false, error: message };
@@ -203,6 +213,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const isAuthenticated = !!user;
+  console.log('AuthContext - user:', user);
+  console.log('AuthContext - isAuthenticated:', isAuthenticated);
+  console.log('AuthContext - loading:', loading);
+
   const value = {
     user,
     loading,
@@ -216,7 +231,7 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     verifyEmail,
     resendVerification,
-    isAuthenticated: !!user,
+    isAuthenticated,
     isVerified: user?.isVerified || false,
     isOwner: user?.role === 'owner',
     isAgent: user?.role === 'agent',

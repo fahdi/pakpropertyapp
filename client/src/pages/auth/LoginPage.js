@@ -76,10 +76,19 @@ const LoginPage = () => {
       return;
     }
 
+    console.log('Attempting login with:', formData.email);
     const result = await login(formData.email, formData.password);
+    console.log('Login result:', result);
     
     if (result.success) {
-      navigate(redirectTo, { replace: true });
+      console.log('Login successful, navigating to:', redirectTo);
+      console.log('User data:', result);
+      // Force navigation with a slight delay to ensure state is updated
+      setTimeout(() => {
+        navigate(redirectTo, { replace: true });
+      }, 100);
+    } else {
+      console.log('Login failed:', result.error);
     }
   };
 

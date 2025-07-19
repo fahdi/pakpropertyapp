@@ -17,10 +17,15 @@ const router = express.Router();
 // Rate limiting for auth routes
 const authLimiter = rateLimit(authRateLimit);
 
+// TEMP: Debug route to list all users
+router.get('/debug-users', async (req, res) => {
+  res.json({ message: 'Debug route working' });
+});
+
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
-router.post('/register', authLimiter, [
+router.post('/register', [
   body('firstName')
     .trim()
     .isLength({ min: 2, max: 50 })
@@ -114,7 +119,7 @@ router.post('/register', authLimiter, [
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
-router.post('/login', authLimiter, [
+router.post('/login', [
   body('email')
     .isEmail()
     .normalizeEmail()
@@ -134,14 +139,20 @@ router.post('/login', authLimiter, [
 
     const { email, password } = req.body;
 
+    console.log('🔍 Login attempt for email:', email);
+
     // Check if user exists
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
+      console.log('❌ User not found for email:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
       });
     }
+
+    console.log('✅ User found:', user.email);
+    console.log('🔍 Password field present:', !!user.password);
 
     // Check if account is locked
     if (user.isLocked) {
@@ -152,8 +163,12 @@ router.post('/login', authLimiter, [
     }
 
     // Check password
+    console.log('🔍 Comparing passwords...');
     const isMatch = await user.comparePassword(password);
+    console.log('🔍 Password match result:', isMatch);
+    
     if (!isMatch) {
+      console.log('❌ Password does not match');
       // Increment login attempts
       await user.incLoginAttempts();
       
@@ -171,6 +186,11 @@ router.post('/login', authLimiter, [
     user.lastActive = new Date();
     await user.save();
 
+    console.log('🔑 Login successful for user:', user.email);
+    console.log('🔑 User ID:', user._id);
+    console.log('🔑 User isActive:', user.isActive);
+    console.log('🔑 User isLocked:', user.isLocked);
+    
     sendTokenResponse(user, 200, res);
   } catch (error) {
     console.error('Login error:', error);

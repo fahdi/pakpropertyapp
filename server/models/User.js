@@ -160,13 +160,23 @@ userSchema.index({ createdAt: -1 });
 
 // Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+  console.log('🔐 Pre-save middleware called for user:', this.email);
+  console.log('🔐 Password modified:', this.isModified('password'));
+  console.log('🔐 Current password:', this.password);
+  
+  if (!this.isModified('password')) {
+    console.log('🔐 Password not modified, skipping hash');
+    return next();
+  }
 
   try {
+    console.log('🔐 Hashing password for user:', this.email);
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
+    console.log('🔐 Password hashed successfully to:', this.password);
     next();
   } catch (error) {
+    console.error('🔐 Error hashing password:', error);
     next(error);
   }
 });

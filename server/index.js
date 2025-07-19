@@ -22,8 +22,10 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (only if not in test mode)
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 // Security middleware
 app.use(helmet({
@@ -100,6 +102,25 @@ app.use('/api/users', userRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/admin', adminRoutes);
 
+// TEMP: Debug route to list all users
+app.get('/api/debug-users', async (req, res) => {
+  try {
+    const User = require('./models/User');
+    const users = await User.find({}, { email: 1, _id: 0 });
+    res.json({
+      success: true,
+      count: users.length,
+      users: users.map(u => u.email)
+    });
+  } catch (error) {
+    console.error('Debug users error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching users'
+    });
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -129,12 +150,15 @@ app.use('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 PakProperty server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🌐 API URL: http://localhost:${PORT}/api`);
-  console.log(`📦 MongoDB Connected: ${process.env.MONGODB_URI ? 'Yes' : 'No'}`);
-});
+// Only start server if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`🚀 PakProperty server running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🌐 API URL: http://localhost:${PORT}/api`);
+    console.log(`📦 MongoDB Connected: ${process.env.MONGODB_URI ? 'Yes' : 'No'}`);
+  });
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

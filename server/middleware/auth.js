@@ -5,15 +5,21 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
+  console.log('🔐 Auth middleware - Headers:', req.headers.authorization ? 'Authorization header present' : 'No Authorization header');
+  console.log('🔐 Auth middleware - Cookies:', req.cookies ? 'Cookies present' : 'No cookies');
+
   // Check for token in headers
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
+    console.log('🔐 Auth middleware - Token from header:', token ? 'Token present' : 'No token');
   } else if (req.cookies && req.cookies.token) {
     // Check for token in cookies
     token = req.cookies.token;
+    console.log('🔐 Auth middleware - Token from cookie:', token ? 'Token present' : 'No token');
   }
 
   if (!token) {
+    console.log('🔐 Auth middleware - No token found');
     return res.status(401).json({
       success: false,
       message: 'Not authorized to access this route'
@@ -21,20 +27,26 @@ const protect = async (req, res, next) => {
   }
 
   try {
+    console.log('🔐 Auth middleware - JWT_SECRET:', process.env.JWT_SECRET ? 'Present' : 'Missing');
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('🔐 Auth middleware - Token decoded successfully, user ID:', decoded.id);
 
     // Get user from token
     const user = await User.findById(decoded.id).select('-password');
     
     if (!user) {
+      console.log('🔐 Auth middleware - User not found in database');
       return res.status(401).json({
         success: false,
         message: 'User not found'
       });
     }
 
+    console.log('🔐 Auth middleware - User found:', user.email, 'Active:', user.isActive, 'Locked:', user.isLocked);
+
     if (!user.isActive) {
+      console.log('🔐 Auth middleware - User account is deactivated');
       return res.status(401).json({
         success: false,
         message: 'Account is deactivated'
@@ -43,6 +55,7 @@ const protect = async (req, res, next) => {
 
     // Check if account is locked
     if (user.isLocked) {
+      console.log('🔐 Auth middleware - User account is locked');
       return res.status(423).json({
         success: false,
         message: 'Account is temporarily locked due to multiple failed login attempts'
@@ -50,8 +63,10 @@ const protect = async (req, res, next) => {
     }
 
     req.user = user;
+    console.log('🔐 Auth middleware - Authentication successful');
     next();
   } catch (error) {
+    console.log('🔐 Auth middleware - JWT verification failed:', error.message);
     return res.status(401).json({
       success: false,
       message: 'Not authorized to access this route'
@@ -154,7 +169,7 @@ const optionalAuth = async (req, res, next) => {
 // Rate limiting for authentication routes
 const authRateLimit = {
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs (increased for development)
   message: 'Too many authentication attempts, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
@@ -162,7 +177,8 @@ const authRateLimit = {
 
 // Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  const secret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
+  return jwt.sign({ id }, secret, {
     expiresIn: process.env.JWT_EXPIRE || '30d'
   });
 };
@@ -170,6 +186,10 @@ const generateToken = (id) => {
 // Send token response
 const sendTokenResponse = (user, statusCode, res) => {
   const token = generateToken(user._id);
+  
+  console.log('🎫 Generated token for user:', user.email);
+  console.log('🎫 Token length:', token.length);
+  console.log('🎫 Token preview:', token.substring(0, 20) + '...');
 
   const options = {
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days

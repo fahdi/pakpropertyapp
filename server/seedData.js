@@ -1062,6 +1062,7 @@ const sampleUsers = [
     email: "ahmed@example.com",
     password: "password123",
     phone: "03001234567",
+    gender: "male",
     role: "agent",
     isVerified: true,
     address: {
@@ -1083,6 +1084,7 @@ const sampleUsers = [
     email: "sarah@example.com", 
     password: "password123",
     phone: "03002345678",
+    gender: "female",
     role: "tenant",
     isVerified: true,
     address: {
@@ -1097,6 +1099,7 @@ const sampleUsers = [
     email: "fatima@example.com",
     password: "password123",
     phone: "03003456789",
+    gender: "female",
     role: "agent",
     isVerified: true,
     address: {
@@ -1118,6 +1121,7 @@ const sampleUsers = [
     email: "ali@example.com",
     password: "password123",
     phone: "03004567890",
+    gender: "male",
     role: "tenant",
     isVerified: true,
     address: {
@@ -1130,8 +1134,9 @@ const sampleUsers = [
     firstName: "Admin",
     lastName: "User",
     email: "admin@pakproperty.com",
-    password: "admin123",
+    password: "Admin123!",
     phone: "03009999999",
+    gender: "male",
     role: "admin",
     isVerified: true,
     address: {
@@ -1158,11 +1163,8 @@ async function seedData() {
     // Create users
     const users = [];
     for (const userData of sampleUsers) {
-      const hashedPassword = await bcrypt.hash(userData.password, 12);
-      const user = await User.create({
-        ...userData,
-        password: hashedPassword
-      });
+      const user = new User(userData);
+      await user.save();
       users.push(user);
       console.log(`👤 Created user: ${user.firstName} ${user.lastName}`);
     }
