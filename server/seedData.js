@@ -1125,6 +1125,20 @@ const sampleUsers = [
       street: "Clifton",
       area: "Block 4"
     }
+  },
+  {
+    firstName: "Admin",
+    lastName: "User",
+    email: "admin@pakproperty.com",
+    password: "admin123",
+    phone: "03009999999",
+    role: "admin",
+    isVerified: true,
+    address: {
+      city: "Islamabad",
+      street: "F-7/1",
+      area: "Street 1"
+    }
   }
 ];
 
