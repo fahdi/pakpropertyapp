@@ -717,7 +717,7 @@ const HomePage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 shadow-lg mb-6">
+            <div className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium border border-white/30 shadow-lg mb-6 text-white">
               <FaCrown className="mr-3 text-yellow-400 text-lg" />
               Premium Services
             </div>

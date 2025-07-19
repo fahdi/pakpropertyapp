@@ -1,62 +1,62 @@
 /**
- * PakProperty App - Color Theme Configuration
+ * PakProperty App - Enhanced Color Theme Configuration
  * 
- * This file contains the color scheme used throughout the application.
- * The colors are designed to be warm, professional, and accessible.
+ * This file contains the improved color scheme used throughout the application.
+ * The colors are designed to be modern, vibrant, professional, and accessible.
  */
 
 export const colors = {
-  // Primary Colors (Royal Purple)
+  // Primary Colors (Modern Blue)
   primary: {
-    50: '#f7f5fa',
-    100: '#ede3f5',
-    200: '#d6b8ea',
-    300: '#b47ad6',
-    400: '#8d3ebd',
-    500: '#6B1E9A', // Royal purple
-    600: '#58197e',
-    700: '#471364',
-    800: '#35104a',
-    900: '#230a2f',
+    50: '#eff6ff',
+    100: '#dbeafe',
+    200: '#bfdbfe',
+    300: '#93c5fd',
+    400: '#60a5fa',
+    500: '#3B82F6', // Modern blue
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
+    900: '#1e3a8a',
   },
-  // Secondary Colors (Deep Indigo/Navy)
+  // Secondary Colors (Emerald Green)
   secondary: {
-    50: '#f5f6fa',
-    100: '#e5e7f0',
-    200: '#c3c7db',
-    300: '#8e91b3',
-    400: '#5a5e7a',
-    500: '#2D2A4A', // Deep indigo/navy
-    600: '#23203a',
-    700: '#19162a',
-    800: '#13101f',
-    900: '#0a0710',
+    50: '#ecfdf5',
+    100: '#d1fae5',
+    200: '#a7f3d0',
+    300: '#6ee7b7',
+    400: '#34d399',
+    500: '#10B981', // Emerald green
+    600: '#059669',
+    700: '#047857',
+    800: '#065f46',
+    900: '#064e3b',
   },
-  // Accent Colors (Gold)
+  // Accent Colors (Warm Orange)
   accent: {
-    50: '#fffbea',
-    100: '#fff3c4',
-    200: '#ffe082',
-    300: '#ffd54f',
-    400: '#ffd700', // Gold
-    500: '#FFC300',
-    600: '#e6b800',
-    700: '#b38f00',
-    800: '#806600',
-    900: '#4d3d00',
+    50: '#fff7ed',
+    100: '#ffedd5',
+    200: '#fed7aa',
+    300: '#fdba74',
+    400: '#fb923c',
+    500: '#F97316', // Warm orange
+    600: '#ea580c',
+    700: '#c2410c',
+    800: '#9a3412',
+    900: '#7c2d12',
   },
-  // Neutral Colors (Gray scale)
+  // Neutral Colors (Modern Gray scale)
   neutral: {
-    50: '#f5f5f7',
-    100: '#e5e5ea',
-    200: '#d1d1d6',
-    300: '#a1a1aa',
-    400: '#6e6e73',
-    500: '#232323', // Main neutral color
-    600: '#1a1a1a',
-    700: '#141414',
-    800: '#0f0f0f',
-    900: '#050505',
+    50: '#f8fafc',
+    100: '#f1f5f9',
+    200: '#e2e8f0',
+    300: '#cbd5e1',
+    400: '#94a3b8',
+    500: '#64748b',
+    600: '#475569',
+    700: '#334155',
+    800: '#1e293b',
+    900: '#0f172a',
   },
   // Status Colors
   success: {
@@ -72,16 +72,16 @@ export const colors = {
     900: '#14532d',
   },
   warning: {
-    50: '#fffbea',
-    100: '#fff3c4',
-    200: '#ffe082',
-    300: '#ffd54f',
-    400: '#ffd700', // Gold for warning
-    500: '#FFC300',
-    600: '#e6b800',
-    700: '#b38f00',
-    800: '#806600',
-    900: '#4d3d00',
+    50: '#fffbeb',
+    100: '#fef3c7',
+    200: '#fde68a',
+    300: '#fcd34d',
+    400: '#fbbf24',
+    500: '#F59E0B', // Amber
+    600: '#d97706',
+    700: '#b45309',
+    800: '#92400e',
+    900: '#78350f',
   },
   error: {
     50: '#fef2f2',
@@ -94,6 +94,43 @@ export const colors = {
     700: '#b91c1c',
     800: '#991b1b',
     900: '#7f1d1d',
+  },
+  // Additional Colors
+  purple: {
+    50: '#faf5ff',
+    100: '#f3e8ff',
+    200: '#e9d5ff',
+    300: '#d8b4fe',
+    400: '#c084fc',
+    500: '#a855f7',
+    600: '#9333ea',
+    700: '#7c3aed',
+    800: '#6b21a8',
+    900: '#581c87',
+  },
+  teal: {
+    50: '#f0fdfa',
+    100: '#ccfbf1',
+    200: '#99f6e4',
+    300: '#5eead4',
+    400: '#2dd4bf',
+    500: '#14b8a6',
+    600: '#0d9488',
+    700: '#0f766e',
+    800: '#115e59',
+    900: '#134e4a',
+  },
+  rose: {
+    50: '#fff1f2',
+    100: '#ffe4e6',
+    200: '#fecdd3',
+    300: '#fda4af',
+    400: '#fb7185',
+    500: '#f43f5e',
+    600: '#e11d48',
+    700: '#be123c',
+    800: '#9f1239',
+    900: '#881337',
   },
 };
 
