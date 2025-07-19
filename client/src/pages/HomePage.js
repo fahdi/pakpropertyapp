@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import api from '../utils/axios';
-import Button from '../components/common/Button';
-import Card from '../components/common/Card';
-import Badge from '../components/common/Badge';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { 
   FaSearch, 
   FaMapMarkerAlt, 
@@ -254,19 +254,18 @@ const HomePage = () => {
                 <Button
                   variant="warning"
                   size="lg"
-                  icon={FaPlay}
                   className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
+                  <FaPlay className="mr-2" />
                   Watch Demo
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
                   className="border-white text-white hover:bg-white hover:text-blue-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                  icon={FaArrowRight}
-                  iconPosition="right"
                 >
                   Browse Properties
+                  <FaArrowRight className="ml-2" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -373,8 +372,8 @@ const HomePage = () => {
                     variant="warning"
                     size="lg"
                     className="w-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                    icon={FaSearch}
                   >
+                    <FaSearch className="mr-2" />
                     Search Properties
                   </Button>
                 </form>
@@ -506,7 +505,7 @@ const HomePage = () => {
                       </div>
                     </div>
                     
-                    <Card.Body className="p-6">
+                    <CardContent className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
@@ -564,7 +563,7 @@ const HomePage = () => {
                           </button>
                         </div>
                       </div>
-                    </Card.Body>
+                    </CardContent>
                   </Card>
                 </motion.div>
               ))}
@@ -581,13 +580,13 @@ const HomePage = () => {
             <Button
               variant="accent"
               size="lg"
-              icon={FaArrowRight}
-              iconPosition="right"
-              as={Link}
-              to="/properties"
+              asChild
               className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
-              View All Properties
+              <Link to="/properties">
+                View All Properties
+                <FaArrowRight className="ml-2" />
+              </Link>
             </Button>
           </motion.div>
         </div>
@@ -692,7 +691,7 @@ const HomePage = () => {
               aria-label="Email address"
               required
             />
-            <Button type="submit" variant="primary" size="lg">Subscribe</Button>
+            <Button type="submit" variant="default" size="lg">Subscribe</Button>
           </form>
         </div>
       </section>
@@ -807,7 +806,7 @@ const HomePage = () => {
                 className="group"
               >
                 <Card className="h-full hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                  <Card.Body className="p-8">
+                  <CardContent className="p-8">
                     <div className="flex items-center mb-6">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <FaStar key={i} className="text-yellow-400 text-lg" />
@@ -827,7 +826,7 @@ const HomePage = () => {
                         <div className="text-sm text-gray-600">{testimonial.role} • {testimonial.city}</div>
                       </div>
                     </div>
-                  </Card.Body>
+                  </CardContent>
                 </Card>
               </motion.div>
             ))}
@@ -863,24 +862,24 @@ const HomePage = () => {
               <Button
                 variant="accent"
                 size="lg"
-                icon={FaArrowRight}
-                iconPosition="right"
-                as={Link}
-                to="/register"
+                asChild
                 className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
-                Get Started Today
+                <Link to="/register">
+                  Get Started Today
+                  <FaArrowRight className="ml-2" />
+                </Link>
               </Button>
               <Button
-                variant="primary"
+                variant="default"
                 size="lg"
+                asChild
                 className="border-white text-white hover:bg-white hover:text-blue-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                icon={FaEye}
-                iconPosition="right"
-                as={Link}
-                to="/properties"
               >
-                Browse Properties
+                <Link to="/properties">
+                  Browse Properties
+                  <FaEye className="ml-2" />
+                </Link>
               </Button>
             </div>
           </motion.div>
