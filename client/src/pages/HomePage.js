@@ -217,7 +217,7 @@ const HomePage = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 shadow-lg"
               >
-                <FaAward className="mr-3 text-yellow-400 text-lg" />
+                <FaAward className="mr-3 text-accent-400 text-lg" />
                 Pakistan's #1 Property Platform
               </motion.div>
               
@@ -228,7 +228,7 @@ const HomePage = () => {
                 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight"
               >
                 Find Your Perfect
-                <span className="block bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-primary-500 via-accent-500 to-secondary-500 bg-clip-text text-transparent">
                   Rental Property
                 </span>
                 in Pakistan
@@ -718,8 +718,8 @@ const HomePage = () => {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium border border-white/30 shadow-lg mb-6 text-white">
-              <FaCrown className="mr-3 text-yellow-400 text-lg" />
-              Premium Services
+                              <FaCrown className="mr-3 text-accent-400 text-lg" />
+                Premium Services
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
               Elevated Property Experience
@@ -744,7 +744,7 @@ const HomePage = () => {
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl mb-6 bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <service.icon className="text-2xl text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-yellow-400 transition-colors">
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-accent-400 transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-white mb-6 leading-relaxed">
@@ -759,7 +759,7 @@ const HomePage = () => {
                     ))}
                   </ul>
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold text-yellow-400">
+                    <div className="text-2xl font-bold text-accent-400">
                       {service.price}
                     </div>
                     <Button

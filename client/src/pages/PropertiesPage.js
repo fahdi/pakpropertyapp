@@ -153,12 +153,12 @@ const PropertiesPage = () => {
           </Link>
         </div>
         {property.isFeatured && (
-          <div className="absolute top-4 left-4 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-medium">
+          <div className="absolute top-4 left-4 bg-accent-400 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
             Featured
           </div>
         )}
         {property.isVerified && (
-          <div className="absolute bottom-4 left-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+          <div className="absolute bottom-4 left-4 bg-success-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
             Verified
           </div>
         )}
@@ -169,7 +169,7 @@ const PropertiesPage = () => {
           <h3 className="text-lg font-semibold text-gray-900 truncate">
             {property.title}
           </h3>
-          <div className="text-lg font-bold text-blue-600">
+          <div className="text-lg font-bold text-primary-600">
             PKR {property.rent?.toLocaleString()}
           </div>
         </div>
