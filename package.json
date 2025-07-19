@@ -9,7 +9,12 @@
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "install-all": "npm install && cd client && npm install",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd server && npm test",
+    "test:frontend": "cd client && npm test -- --coverage --watchAll=false",
+    "test:all": "concurrently \"npm run test:backend\" \"npm run test:frontend\"",
+    "test:docker": "docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit"
   },
   "keywords": ["property", "rental", "pakistan", "real-estate"],
   "author": "PakProperty Team",

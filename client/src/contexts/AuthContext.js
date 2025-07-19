@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
           console.log('Token is invalid, logging out');
           logout();
         } else {
-          // No token, just set loading to false
+          // No token, just set loading to false and user to null
           console.log('No token, setting loading to false');
           setUser(null);
         }

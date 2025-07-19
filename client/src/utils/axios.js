@@ -33,10 +33,18 @@ api.interceptors.response.use(
   (error) => {
     console.log('Axios interceptor error:', error.response?.status, error.response?.data);
     if (error.response?.status === 401) {
-      console.log('401 error detected, removing token and redirecting');
-      localStorage.removeItem('token');
-      // Don't redirect immediately, let the component handle it
-      // window.location.href = '/login';
+      console.log('401 error detected');
+      // Only remove token if it's a specific auth endpoint that indicates invalid token
+      const isAuthEndpoint = error.config.url?.includes('/auth/');
+      const isLoginEndpoint = error.config.url?.includes('/auth/login');
+      const isMeEndpoint = error.config.url?.includes('/auth/me');
+      
+      // Only remove token for login failures or /me endpoint failures (not for missing tokens)
+      if (isAuthEndpoint && (isLoginEndpoint || isMeEndpoint)) {
+        console.log('Removing token due to auth endpoint 401');
+        localStorage.removeItem('token');
+        // Don't redirect immediately, let the component handle it
+      }
     }
     return Promise.reject(error);
   }

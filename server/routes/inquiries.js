@@ -176,7 +176,7 @@ router.get('/my-inquiries', protect, async (req, res) => {
 // @desc    Get received inquiries (as owner/agent)
 // @route   GET /api/inquiries/received
 // @access  Private (Owner/Agent)
-router.get('/received', protect, authorize('owner', 'agent'), async (req, res) => {
+router.get('/received', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
   try {
     const inquiries = await Inquiry.find({ owner: req.user.id })
       .populate('property', 'title location rent images')
@@ -243,7 +243,7 @@ router.get('/:id', protect, async (req, res) => {
 // @desc    Respond to inquiry
 // @route   PUT /api/inquiries/:id/respond
 // @access  Private (Owner/Agent)
-router.put('/:id/respond', protect, authorize('owner', 'agent'), [
+router.put('/:id/respond', protect, authorize('owner', 'agent', 'admin'), [
   body('message')
     .trim()
     .isLength({ min: 10, max: 1000 })
@@ -305,7 +305,7 @@ router.put('/:id/respond', protect, authorize('owner', 'agent'), [
 // @desc    Schedule viewing
 // @route   PUT /api/inquiries/:id/schedule-viewing
 // @access  Private (Owner/Agent)
-router.put('/:id/schedule-viewing', protect, authorize('owner', 'agent'), [
+router.put('/:id/schedule-viewing', protect, authorize('owner', 'agent', 'admin'), [
   body('scheduledDate')
     .isISO8601()
     .withMessage('Valid scheduled date is required'),
@@ -363,7 +363,7 @@ router.put('/:id/schedule-viewing', protect, authorize('owner', 'agent'), [
 // @desc    Update inquiry status
 // @route   PUT /api/inquiries/:id/status
 // @access  Private (Owner/Agent)
-router.put('/:id/status', protect, authorize('owner', 'agent'), [
+router.put('/:id/status', protect, authorize('owner', 'agent', 'admin'), [
   body('status')
     .isIn(['pending', 'responded', 'viewing-scheduled', 'rented', 'rejected', 'expired'])
     .withMessage('Invalid status')
@@ -416,7 +416,7 @@ router.put('/:id/status', protect, authorize('owner', 'agent'), [
 // @desc    Get inquiry statistics
 // @route   GET /api/inquiries/stats
 // @access  Private (Owner/Agent)
-router.get('/stats', protect, authorize('owner', 'agent'), async (req, res) => {
+router.get('/stats', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
   try {
     const stats = await Inquiry.aggregate([
       { $match: { owner: req.user._id } },

@@ -270,12 +270,18 @@ router.get('/dashboard', protect, async (req, res) => {
         isVerified: user.isVerified,
         profilePicture: user.profilePicture
       },
+      // Count fields for frontend
+      propertiesCount: 0,
+      inquiriesCount: 0,
+      savedCount: 0,
+      profileViews: 0,
+      // Detailed data
       savedProperties: [],
       recentInquiries: [],
       properties: []
     };
 
-    // Get saved properties
+    // Get saved properties count
     if (user.savedProperties?.length > 0) {
       dashboardData.savedProperties = await Property.find({
         _id: { $in: user.savedProperties },
@@ -283,10 +289,11 @@ router.get('/dashboard', protect, async (req, res) => {
       })
       .populate('owner', 'firstName lastName')
       .limit(6);
+      dashboardData.savedCount = user.savedProperties.length;
     }
 
-    // Get user's properties (if owner/agent)
-    if (['owner', 'agent'].includes(user.role)) {
+    // Get user's properties count (if owner/agent/admin)
+    if (['owner', 'agent', 'admin'].includes(user.role)) {
       dashboardData.properties = await Property.find({
         $or: [
           { owner: user._id },
@@ -297,9 +304,15 @@ router.get('/dashboard', protect, async (req, res) => {
       .populate('agent', 'firstName lastName')
       .sort({ createdAt: -1 })
       .limit(6);
+      dashboardData.propertiesCount = await Property.countDocuments({
+        $or: [
+          { owner: user._id },
+          { agent: user._id }
+        ]
+      });
     }
 
-    // Get recent inquiries
+    // Get recent inquiries and count
     const Inquiry = require('../models/Inquiry');
     if (user.role === 'tenant') {
       dashboardData.recentInquiries = await Inquiry.find({ tenant: user._id })
@@ -307,13 +320,18 @@ router.get('/dashboard', protect, async (req, res) => {
         .populate('owner', 'firstName lastName')
         .sort({ createdAt: -1 })
         .limit(5);
-    } else if (['owner', 'agent'].includes(user.role)) {
+      dashboardData.inquiriesCount = await Inquiry.countDocuments({ tenant: user._id });
+    } else if (['owner', 'agent', 'admin'].includes(user.role)) {
       dashboardData.recentInquiries = await Inquiry.find({ owner: user._id })
         .populate('property', 'title location rent')
         .populate('tenant', 'firstName lastName')
         .sort({ createdAt: -1 })
         .limit(5);
+      dashboardData.inquiriesCount = await Inquiry.countDocuments({ owner: user._id });
     }
+
+    // Profile views (placeholder for now)
+    dashboardData.profileViews = user.profileViews || 0;
 
     res.json({
       success: true,
@@ -345,7 +363,7 @@ router.get('/stats', protect, async (req, res) => {
     const Inquiry = require('../models/Inquiry');
     if (user.role === 'tenant') {
       stats.totalInquiries = await Inquiry.countDocuments({ tenant: user._id });
-    } else if (['owner', 'agent'].includes(user.role)) {
+    } else if (['owner', 'agent', 'admin'].includes(user.role)) {
       stats.totalInquiries = await Inquiry.countDocuments({ owner: user._id });
       stats.properties = await Property.countDocuments({
         $or: [

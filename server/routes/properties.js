@@ -197,6 +197,35 @@ router.get('/featured', async (req, res) => {
   }
 });
 
+// @desc    Get user's properties
+// @route   GET /api/properties/my-properties
+// @access  Private (Owner/Agent)
+router.get('/my-properties', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
+  try {
+    const properties = await Property.find({
+      $or: [
+        { owner: req.user.id },
+        { agent: req.user.id }
+      ]
+    })
+    .populate('owner', 'firstName lastName email phone')
+    .populate('agent', 'firstName lastName email phone')
+    .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      count: properties.length,
+      data: properties
+    });
+  } catch (error) {
+    console.error('Get my properties error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching your properties'
+    });
+  }
+});
+
 // @desc    Get single property
 // @route   GET /api/properties/:id
 // @access  Public
@@ -232,7 +261,7 @@ router.get('/:id', async (req, res) => {
 // @desc    Create property
 // @route   POST /api/properties
 // @access  Private (Owner/Agent)
-router.post('/', protect, authorize('owner', 'agent'), upload.array('images', 10), [
+router.post('/', protect, authorize('owner', 'agent', 'admin'), upload.array('images', 10), [
   body('title')
     .trim()
     .isLength({ min: 10, max: 100 })
@@ -336,7 +365,7 @@ router.post('/', protect, authorize('owner', 'agent'), upload.array('images', 10
 // @desc    Update property
 // @route   PUT /api/properties/:id
 // @access  Private (Owner/Agent)
-router.put('/:id', protect, authorize('owner', 'agent'), upload.array('images', 10), async (req, res) => {
+router.put('/:id', protect, authorize('owner', 'agent', 'admin'), upload.array('images', 10), async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
 
@@ -416,7 +445,7 @@ router.put('/:id', protect, authorize('owner', 'agent'), upload.array('images', 
 // @desc    Delete property
 // @route   DELETE /api/properties/:id
 // @access  Private (Owner/Agent)
-router.delete('/:id', protect, authorize('owner', 'agent'), async (req, res) => {
+router.delete('/:id', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
 
@@ -450,39 +479,10 @@ router.delete('/:id', protect, authorize('owner', 'agent'), async (req, res) => 
   }
 });
 
-// @desc    Get user's properties
-// @route   GET /api/properties/my-properties
-// @access  Private (Owner/Agent)
-router.get('/my-properties', protect, authorize('owner', 'agent'), async (req, res) => {
-  try {
-    const properties = await Property.find({
-      $or: [
-        { owner: req.user.id },
-        { agent: req.user.id }
-      ]
-    })
-    .populate('owner', 'firstName lastName email phone')
-    .populate('agent', 'firstName lastName email phone')
-    .sort({ createdAt: -1 });
-
-    res.json({
-      success: true,
-      count: properties.length,
-      data: properties
-    });
-  } catch (error) {
-    console.error('Get my properties error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching your properties'
-    });
-  }
-});
-
 // @desc    Get property analytics
 // @route   GET /api/properties/:id/analytics
 // @access  Private (Owner/Agent)
-router.get('/:id/analytics', protect, authorize('owner', 'agent'), async (req, res) => {
+router.get('/:id/analytics', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
 

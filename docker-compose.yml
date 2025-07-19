@@ -19,6 +19,8 @@ services:
     restart: always
     ports:
       - "5001:5001"
+    env_file:
+      - server/.env
     environment:
       - MONGODB_URI=mongodb://mongo:27017/pakproperty
       - NODE_ENV=development

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, HashRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
@@ -157,6 +157,12 @@ const AppContent = () => {
               <Route path="/dashboard/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
               <Route path="/dashboard/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              {/* Direct routes without dashboard prefix */}
+              <Route path="/my-properties" element={<ProtectedRoute><MyPropertiesPage /></ProtectedRoute>} />
+              <Route path="/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
+              <Route path="/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              <Route path="/add-property" element={<ProtectedRoute><AddPropertyPage /></ProtectedRoute>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
