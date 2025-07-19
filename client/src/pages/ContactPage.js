@@ -631,7 +631,7 @@ const ContactPage = () => {
             </a>
             <a
               href="/properties"
-              className="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-blue-600"
+              className="btn btn-outline btn-lg border-white text-blue-600 bg-white"
             >
               Browse Properties
             </a>

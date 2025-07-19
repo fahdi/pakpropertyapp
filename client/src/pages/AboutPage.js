@@ -188,7 +188,7 @@ const AboutPage = () => {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="border-white text-white hover:bg-white hover:text-primary-600 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  className="border-white text-primary-600 bg-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
                   <Link to="/contact">
                     Contact Us
@@ -549,7 +549,7 @@ const AboutPage = () => {
                 variant="outline"
                 size="lg"
                 asChild
-                className="border-white text-white hover:bg-white hover:text-primary-600 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                  className="border-white text-primary-600 bg-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 <Link to="/contact">
                   Contact Our Team

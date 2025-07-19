@@ -387,7 +387,7 @@ const MyPropertiesPage = () => {
                         className={`p-1 rounded-full ${
                           property.isFeatured 
                             ? 'bg-yellow-500 text-white' 
-                            : 'bg-white text-gray-600 hover:bg-yellow-500 hover:text-white'
+                            : 'bg-white text-gray-600 hover:bg-yellow-500 hover:text-white border border-gray-300'
                         } transition-colors`}
                         title={property.isFeatured ? 'Remove from featured' : 'Mark as featured'}
                       >

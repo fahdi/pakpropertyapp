@@ -953,7 +953,7 @@ const EditPropertyPage = () => {
                               className={`p-2 rounded-full ${
                                 (typeof image === 'string' ? index === 0 : image.isPrimary)
                                   ? 'bg-blue-500 text-white'
-                                  : 'bg-white text-gray-600 hover:bg-blue-500 hover:text-white'
+                                  : 'bg-white text-gray-600 hover:bg-blue-500 hover:text-white border border-gray-300'
                               } transition-colors`}
                               title="Set as primary"
                             >

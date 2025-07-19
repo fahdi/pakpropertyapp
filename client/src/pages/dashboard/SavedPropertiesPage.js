@@ -328,7 +328,7 @@ const SavedPropertiesPage = () => {
                     <div className="absolute top-3 right-3 flex space-x-2">
                       <button
                         onClick={() => handleShare(property)}
-                        className="p-1 rounded-full bg-white text-gray-600 hover:bg-blue-500 hover:text-white transition-colors"
+                        className="p-1 rounded-full bg-white text-gray-600 hover:bg-blue-500 hover:text-white transition-colors border border-gray-300"
                         title="Share property"
                       >
                         <FaShare className="w-3 h-3" />
@@ -339,7 +339,7 @@ const SavedPropertiesPage = () => {
                           setSelectedProperty(property);
                           setShowRemoveModal(true);
                         }}
-                        className="p-1 rounded-full bg-white text-gray-600 hover:bg-red-500 hover:text-white transition-colors"
+                        className="p-1 rounded-full bg-white text-gray-600 hover:bg-red-500 hover:text-white transition-colors border border-gray-300"
                         title="Remove from saved"
                       >
                         <FaTrash className="w-3 h-3" />

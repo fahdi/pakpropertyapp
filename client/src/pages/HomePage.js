@@ -315,7 +315,7 @@ const HomePage = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white hover:text-blue-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  className="border-white text-blue-900 bg-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
                   Browse Properties
                   <FaArrowRight className="ml-2" />
@@ -817,7 +817,7 @@ const HomePage = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-white/30 text-white hover:bg-white hover:text-gray-900 transition-all duration-300"
+                      className="border-white/30 text-gray-900 bg-white transition-all duration-300"
                     >
                       Learn More
                     </Button>
@@ -927,7 +927,7 @@ const HomePage = () => {
                 variant="default"
                 size="lg"
                 asChild
-                className="border-white text-white hover:bg-white hover:text-blue-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                  className="border-white text-blue-900 bg-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 <Link to="/properties">
                   Browse Properties
