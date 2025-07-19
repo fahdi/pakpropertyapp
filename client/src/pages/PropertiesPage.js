@@ -20,6 +20,8 @@ import {
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const DEFAULT_LIMIT = 12;
+
 const PropertiesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
@@ -37,7 +39,9 @@ const PropertiesPage = () => {
       bedrooms: searchParams.get('bedrooms') || '',
       bathrooms: searchParams.get('bathrooms') || '',
       furnishing: searchParams.get('furnishing') || '',
-      amenities: searchParams.getAll('amenities') || []
+      amenities: searchParams.getAll('amenities') || [],
+      page: parseInt(searchParams.get('page')) || 1,
+      limit: parseInt(searchParams.get('limit')) || DEFAULT_LIMIT,
     };
   };
 
@@ -47,7 +51,7 @@ const PropertiesPage = () => {
   useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
+      if (value !== '' && value !== null && value !== undefined) {
         if (Array.isArray(value)) {
           value.forEach(v => params.append(key, v));
         } else {
@@ -64,7 +68,7 @@ const PropertiesPage = () => {
     async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value) {
+        if (value !== '' && value !== null && value !== undefined) {
           if (Array.isArray(value)) {
             value.forEach(v => params.append(key, v));
           } else {
@@ -73,7 +77,6 @@ const PropertiesPage = () => {
         }
       });
       params.set('sort', sortBy);
-      
       const response = await api.get(`/properties?${params.toString()}`);
       return response.data;
     },
@@ -88,15 +91,12 @@ const PropertiesPage = () => {
   const totalPages = propertiesData?.pagination?.pages || 1;
   const currentPage = propertiesData?.pagination?.page || 1;
 
-
-
-
-
   // Handle filter changes
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
       ...prev,
-      [key]: value
+      [key]: value,
+      page: 1 // Reset to first page on filter change
     }));
   };
 
@@ -106,7 +106,8 @@ const PropertiesPage = () => {
       ...prev,
       amenities: prev.amenities.includes(amenity)
         ? prev.amenities.filter(a => a !== amenity)
-        : [...prev.amenities, amenity]
+        : [...prev.amenities, amenity],
+      page: 1
     }));
   };
 
@@ -121,8 +122,21 @@ const PropertiesPage = () => {
       bedrooms: '',
       bathrooms: '',
       furnishing: '',
-      amenities: []
+      amenities: [],
+      page: 1,
+      limit: DEFAULT_LIMIT
     });
+  };
+
+  // Pagination handlers
+  const goToPage = (page) => {
+    setFilters(prev => ({ ...prev, page }));
+  };
+  const goToPrev = () => {
+    if (currentPage > 1) setFilters(prev => ({ ...prev, page: currentPage - 1 }));
+  };
+  const goToNext = () => {
+    if (currentPage < totalPages) setFilters(prev => ({ ...prev, page: currentPage + 1 }));
   };
 
   // Property card component
@@ -593,6 +607,7 @@ const PropertiesPage = () => {
             <div className="flex items-center space-x-2">
               <button
                 disabled={currentPage === 1}
+                onClick={goToPrev}
                 className="px-3 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 Previous
@@ -601,6 +616,7 @@ const PropertiesPage = () => {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
+                  onClick={() => goToPage(page)}
                   className={`px-3 py-2 border rounded-md ${
                     page === currentPage
                       ? 'bg-blue-600 text-white border-blue-600'
@@ -613,6 +629,7 @@ const PropertiesPage = () => {
               
               <button
                 disabled={currentPage === totalPages}
+                onClick={goToNext}
                 className="px-3 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 Next

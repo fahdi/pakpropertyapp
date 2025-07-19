@@ -31,15 +31,26 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         if (token) {
-          console.log('Checking auth with token:', token);
+          console.log('Checking auth with token');
           const response = await api.get('/auth/me');
           console.log('Auth check response:', response.data);
           setUser(response.data.data);
+        } else {
+          // No token, user is not authenticated
+          console.log('No token found, user not authenticated');
+          setUser(null);
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        console.error('Auth check error response:', error.response?.data);
-        logout();
+        // Only logout if we had a token but it's invalid
+        if (token) {
+          console.log('Token is invalid, logging out');
+          logout();
+        } else {
+          // No token, just set loading to false
+          console.log('No token, setting loading to false');
+          setUser(null);
+        }
       } finally {
         setLoading(false);
       }

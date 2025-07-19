@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  test-mongo:
+    image: mongo:6
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=test
+    volumes:
+      - test_mongo_data:/data/db
+
+  test-server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      - NODE_ENV=test
+      - MONGODB_URI=mongodb://test-mongo:27017/test
+      - JWT_SECRET=test-secret-key
+      - PORT=5002
+    ports:
+      - "5002:5002"
+    depends_on:
+      - test-mongo
+    command: ["npm", "test"]
+    volumes:
+      - ./server:/app/server
+      - /app/server/node_modules
+
+  test-client:
+    build: ./client
+    environment:
+      - CI=true
+      - REACT_APP_API_URL=http://localhost:5002/api
+    ports:
+      - "3001:3000"
+    depends_on:
+      - test-server
+    command: ["npm", "test", "--", "--coverage", "--watchAll=false", "--ci"]
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - NODE_ENV=test
+    depends_on:
+      - test-server
+      - test-client
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: ["npm", "run", "test:all"]
+
+volumes:
+  test_mongo_data: 
