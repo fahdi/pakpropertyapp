@@ -8,6 +8,7 @@ const Property = require('./models/Property');
 const connectDB = require('./config/database');
 
 const sampleProperties = [
+  // KARACHI PROPERTIES
   {
     title: "Modern Apartment in DHA Phase 6",
     description: "Beautiful 2-bedroom apartment with modern amenities, located in the heart of DHA Phase 6. Features include a fully equipped kitchen, spacious living room, and balcony with city views.",
@@ -73,12 +74,6 @@ const sampleProperties = [
         caption: "Kitchen",
         isPrimary: false,
         order: 2
-      },
-      {
-        url: "https://images.unsplash.com/photo-1560448204-5c3f6b6b8b8b?w=800",
-        caption: "Bedroom",
-        isPrimary: false,
-        order: 3
       }
     ],
     contactInfo: {
@@ -90,6 +85,144 @@ const sampleProperties = [
     isFeatured: true,
     isVerified: true
   },
+  {
+    title: "Luxury Penthouse in Clifton",
+    description: "Exclusive 3-bedroom penthouse with panoramic sea views. Located in the prestigious Clifton area with premium amenities and 24/7 security.",
+    propertyType: "apartment",
+    category: "residential",
+    status: "available",
+    rent: 180000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Clifton Block 4",
+      city: "Karachi",
+      area: "Clifton",
+      block: "4",
+      coordinates: {
+        latitude: 24.8138,
+        longitude: 67.0222
+      }
+    },
+    specifications: {
+      bedrooms: 3,
+      bathrooms: 3,
+      kitchens: 1,
+      drawingRooms: 2,
+      parkingSpaces: 2
+    },
+    area: {
+      size: 2500,
+      unit: "sqft",
+      coveredArea: 2200,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "fully-furnished",
+      condition: "excellent",
+      age: 1,
+      floor: 15,
+      totalFloors: 20
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      elevator: true,
+      security: true,
+      cctv: true,
+      guard: true,
+      balcony: true,
+      swimmingPool: true,
+      gym: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+        caption: "Penthouse View",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: true,
+    isVerified: true
+  },
+  {
+    title: "Studio Apartment in Gulshan-e-Iqbal",
+    description: "Compact studio apartment perfect for students or young professionals. Located near universities and shopping centers.",
+    propertyType: "apartment",
+    category: "residential",
+    status: "available",
+    rent: 22000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Gulshan-e-Iqbal Block 6",
+      city: "Karachi",
+      area: "Gulshan-e-Iqbal",
+      block: "6",
+      coordinates: {
+        latitude: 24.9207,
+        longitude: 67.0981
+      }
+    },
+    specifications: {
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 0
+    },
+    area: {
+      size: 400,
+      unit: "sqft",
+      coveredArea: 350,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "good",
+      age: 8,
+      floor: 2,
+      totalFloors: 5
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      airConditioning: true,
+      security: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+        caption: "Studio View",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // LAHORE PROPERTIES
   {
     title: "Luxury Villa in Bahria Town",
     description: "Stunning 4-bedroom villa with private garden and swimming pool. Located in the prestigious Bahria Town community with 24/7 security and modern amenities.",
@@ -151,18 +284,6 @@ const sampleProperties = [
         caption: "Exterior View",
         isPrimary: true,
         order: 1
-      },
-      {
-        url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
-        caption: "Living Area",
-        isPrimary: false,
-        order: 2
-      },
-      {
-        url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
-        caption: "Garden",
-        isPrimary: false,
-        order: 3
       }
     ],
     contactInfo: {
@@ -228,12 +349,6 @@ const sampleProperties = [
         caption: "Studio View",
         isPrimary: true,
         order: 1
-      },
-      {
-        url: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=800",
-        caption: "Kitchen",
-        isPrimary: false,
-        order: 2
       }
     ],
     contactInfo: {
@@ -245,6 +360,78 @@ const sampleProperties = [
     isFeatured: false,
     isVerified: true
   },
+  {
+    title: "Family House in DHA Phase 5",
+    description: "Spacious 3-bedroom house in DHA Phase 5. Large backyard, modern kitchen, and peaceful neighborhood with excellent security.",
+    propertyType: "house",
+    category: "residential",
+    status: "available",
+    rent: 85000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "DHA Phase 5, Block C",
+      city: "Lahore",
+      area: "DHA Phase 5",
+      block: "C",
+      coordinates: {
+        latitude: 31.5204,
+        longitude: 74.3587
+      }
+    },
+    specifications: {
+      bedrooms: 3,
+      bathrooms: 3,
+      kitchens: 1,
+      drawingRooms: 1,
+      servantQuarters: 1,
+      parkingSpaces: 2
+    },
+    area: {
+      size: 8,
+      unit: "marla",
+      coveredArea: 2800,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "good",
+      age: 6,
+      floor: 1,
+      totalFloors: 1
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      security: true,
+      guard: true,
+      garden: true,
+      servantQuarter: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+        caption: "House Exterior",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // ISLAMABAD PROPERTIES
   {
     title: "Commercial Space in Blue Area",
     description: "Prime commercial space in Islamabad's Blue Area. Perfect for offices, retail, or restaurants. High foot traffic and excellent visibility.",
@@ -303,12 +490,6 @@ const sampleProperties = [
         caption: "Office Space",
         isPrimary: true,
         order: 1
-      },
-      {
-        url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
-        caption: "Reception Area",
-        isPrimary: false,
-        order: 2
       }
     ],
     contactInfo: {
@@ -379,12 +560,488 @@ const sampleProperties = [
         caption: "House Exterior",
         isPrimary: true,
         order: 1
-      },
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+  {
+    title: "Luxury Apartment in F-8",
+    description: "Modern 2-bedroom apartment in F-8 sector. High-end amenities, beautiful views, and excellent location near diplomatic enclave.",
+    propertyType: "apartment",
+    category: "residential",
+    status: "available",
+    rent: 95000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "F-8/1, Street 15",
+      city: "Islamabad",
+      area: "F-8/1",
+      sector: "F-8",
+      coordinates: {
+        latitude: 33.6844,
+        longitude: 73.0479
+      }
+    },
+    specifications: {
+      bedrooms: 2,
+      bathrooms: 2,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 1
+    },
+    area: {
+      size: 1500,
+      unit: "sqft",
+      coveredArea: 1300,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "fully-furnished",
+      condition: "excellent",
+      age: 2,
+      floor: 5,
+      totalFloors: 12
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      elevator: true,
+      security: true,
+      cctv: true,
+      guard: true,
+      balcony: true,
+      swimmingPool: true,
+      gym: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+        caption: "Living Room",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: true,
+    isVerified: true
+  },
+
+  // RAWALPINDI PROPERTIES
+  {
+    title: "Affordable Studio in Saddar",
+    description: "Budget-friendly studio apartment in Rawalpindi Saddar. Perfect for students or young professionals starting their careers.",
+    propertyType: "apartment",
+    category: "residential",
+    status: "available",
+    rent: 18000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Saddar, Main Street",
+      city: "Rawalpindi",
+      area: "Saddar",
+      coordinates: {
+        latitude: 33.5651,
+        longitude: 73.0169
+      }
+    },
+    specifications: {
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 0
+    },
+    area: {
+      size: 350,
+      unit: "sqft",
+      coveredArea: 300,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "average",
+      age: 12,
+      floor: 1,
+      totalFloors: 3
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      airConditioning: false,
+      security: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+        caption: "Studio View",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // PESHAWAR PROPERTIES
+  {
+    title: "Traditional House in University Town",
+    description: "Beautiful traditional 2-bedroom house in University Town. Large courtyard, traditional architecture, and peaceful environment.",
+    propertyType: "house",
+    category: "residential",
+    status: "available",
+    rent: 35000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "University Town, Street 5",
+      city: "Peshawar",
+      area: "University Town",
+      coordinates: {
+        latitude: 34.0150,
+        longitude: 71.5249
+      }
+    },
+    specifications: {
+      bedrooms: 2,
+      bathrooms: 2,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 1
+    },
+    area: {
+      size: 5,
+      unit: "marla",
+      coveredArea: 1800,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "good",
+      age: 15,
+      floor: 1,
+      totalFloors: 1
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      security: true,
+      guard: true,
+      garden: true
+    },
+    images: [
       {
         url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+        caption: "House Exterior",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // MULTAN PROPERTIES
+  {
+    title: "Modern Apartment in Cantt",
+    description: "Contemporary 2-bedroom apartment in Multan Cantt. Modern amenities, excellent location, and peaceful surroundings.",
+    propertyType: "apartment",
+    category: "residential",
+    status: "available",
+    rent: 28000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Cantt Area, Block A",
+      city: "Multan",
+      area: "Cantt",
+      coordinates: {
+        latitude: 30.1575,
+        longitude: 71.5249
+      }
+    },
+    specifications: {
+      bedrooms: 2,
+      bathrooms: 2,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 1
+    },
+    area: {
+      size: 1000,
+      unit: "sqft",
+      coveredArea: 850,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "good",
+      age: 4,
+      floor: 2,
+      totalFloors: 6
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      elevator: true,
+      security: true,
+      cctv: true,
+      guard: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
         caption: "Living Room",
-        isPrimary: false,
-        order: 2
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // QUETTA PROPERTIES
+  {
+    title: "Cozy House in Satellite Town",
+    description: "Charming 2-bedroom house in Quetta's Satellite Town. Beautiful garden, traditional design, and excellent security.",
+    propertyType: "house",
+    category: "residential",
+    status: "available",
+    rent: 25000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Satellite Town, Street 8",
+      city: "Quetta",
+      area: "Satellite Town",
+      coordinates: {
+        latitude: 30.1798,
+        longitude: 66.9750
+      }
+    },
+    specifications: {
+      bedrooms: 2,
+      bathrooms: 2,
+      kitchens: 1,
+      drawingRooms: 1,
+      parkingSpaces: 1
+    },
+    area: {
+      size: 4,
+      unit: "marla",
+      coveredArea: 1500,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "semi-furnished",
+      condition: "good",
+      age: 10,
+      floor: 1,
+      totalFloors: 1
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      security: true,
+      guard: true,
+      garden: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+        caption: "House Exterior",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: false,
+    isVerified: true
+  },
+
+  // COMMERCIAL PROPERTIES
+  {
+    title: "Retail Space in Saddar Karachi",
+    description: "Prime retail space in Karachi Saddar. High foot traffic, excellent visibility, perfect for retail businesses.",
+    propertyType: "commercial",
+    category: "commercial",
+    status: "available",
+    rent: 120000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Saddar, Main Street",
+      city: "Karachi",
+      area: "Saddar",
+      coordinates: {
+        latitude: 24.8607,
+        longitude: 67.0011
+      }
+    },
+    specifications: {
+      bedrooms: 0,
+      bathrooms: 1,
+      kitchens: 0,
+      drawingRooms: 0,
+      parkingSpaces: 2
+    },
+    area: {
+      size: 1500,
+      unit: "sqft",
+      coveredArea: 1300,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "unfurnished",
+      condition: "good",
+      age: 5,
+      floor: 1,
+      totalFloors: 3
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      security: true,
+      cctv: true,
+      guard: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+        caption: "Retail Space",
+        isPrimary: true,
+        order: 1
+      }
+    ],
+    contactInfo: {
+      name: "Ahmed Khan",
+      phone: "03001234567",
+      email: "ahmed@example.com",
+      preferredContact: "phone"
+    },
+    isFeatured: true,
+    isVerified: true
+  },
+  {
+    title: "Office Space in Gulberg Lahore",
+    description: "Professional office space in Gulberg Lahore. Modern facilities, excellent location, perfect for corporate offices.",
+    propertyType: "commercial",
+    category: "commercial",
+    status: "available",
+    rent: 95000,
+    rentType: "monthly",
+    currency: "PKR",
+    location: {
+      address: "Gulberg III, Commercial Area",
+      city: "Lahore",
+      area: "Gulberg III",
+      coordinates: {
+        latitude: 31.5204,
+        longitude: 74.3587
+      }
+    },
+    specifications: {
+      bedrooms: 0,
+      bathrooms: 2,
+      kitchens: 0,
+      drawingRooms: 0,
+      parkingSpaces: 3
+    },
+    area: {
+      size: 1800,
+      unit: "sqft",
+      coveredArea: 1600,
+      coveredAreaUnit: "sqft"
+    },
+    features: {
+      furnishing: "unfurnished",
+      condition: "excellent",
+      age: 2,
+      floor: 2,
+      totalFloors: 8
+    },
+    amenities: {
+      electricity: true,
+      gas: true,
+      water: true,
+      internet: true,
+      generator: true,
+      backup: true,
+      airConditioning: true,
+      elevator: true,
+      security: true,
+      cctv: true,
+      guard: true
+    },
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+        caption: "Office Space",
+        isPrimary: true,
+        order: 1
       }
     ],
     contactInfo: {
@@ -433,6 +1090,41 @@ const sampleUsers = [
       street: "Gulberg III",
       area: "Block A"
     }
+  },
+  {
+    firstName: "Fatima",
+    lastName: "Hassan",
+    email: "fatima@example.com",
+    password: "password123",
+    phone: "03003456789",
+    role: "agent",
+    isVerified: true,
+    address: {
+      city: "Islamabad",
+      street: "F-7/1",
+      area: "Street 12"
+    },
+    agentInfo: {
+      licenseNumber: "AG789012",
+      companyName: "Capital Properties",
+      experience: 8,
+      specializations: ["residential", "luxury"],
+      isVerified: true
+    }
+  },
+  {
+    firstName: "Ali",
+    lastName: "Raza",
+    email: "ali@example.com",
+    password: "password123",
+    phone: "03004567890",
+    role: "tenant",
+    isVerified: true,
+    address: {
+      city: "Karachi",
+      street: "Clifton",
+      area: "Block 4"
+    }
   }
 ];
 
@@ -458,7 +1150,7 @@ async function seedData() {
         password: hashedPassword
       });
       users.push(user);
-      console.log(`👤 Created user: ${user.name}`);
+      console.log(`👤 Created user: ${user.firstName} ${user.lastName}`);
     }
     
     // Create properties
