@@ -13,6 +13,18 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>PakProperty - Pakistan's Leading Property Rental Platform</title>
     
+    <!-- Client-side routing handler -->
+    <script>
+      // Handle direct URL access for client-side routing
+      (function() {
+        // Check if this is a direct URL access (not from React Router)
+        if (window.location.pathname !== '/' && !window.location.pathname.startsWith('/api/')) {
+          // This is a client-side route, let React Router handle it
+          console.log('Client-side route detected:', window.location.pathname);
+        }
+      })();
+    </script>
+    
     <!-- Minimal ResizeObserver Error Handler -->
     <script>
       // Minimal ResizeObserver elimination without breaking webpack
