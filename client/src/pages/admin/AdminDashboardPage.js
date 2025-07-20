@@ -124,7 +124,7 @@ const AdminDashboardPage = () => {
   if (dashboardLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="container-responsive py-8">
+        <div className="container-responsive pt-24 lg:pt-28 pb-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-4"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -140,7 +140,7 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container-responsive py-8">
+      <div className="container-responsive pt-24 lg:pt-28 pb-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">

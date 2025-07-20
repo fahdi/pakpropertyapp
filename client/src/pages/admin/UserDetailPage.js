@@ -173,7 +173,7 @@ const UserDetailPage = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="container-responsive py-8">
+        <div className="container-responsive pt-24 lg:pt-28 pb-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-4"></div>
             <div className="h-64 bg-gray-200 rounded"></div>
@@ -186,7 +186,7 @@ const UserDetailPage = () => {
   if (error || !userData) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="container-responsive py-8">
+        <div className="container-responsive pt-24 lg:pt-28 pb-8">
           <div className="text-center">
             <div className="text-red-600 text-lg mb-4">User not found</div>
             <Link to="/admin/users" className="btn btn-primary">
@@ -202,7 +202,7 @@ const UserDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container-responsive py-8">
+      <div className="container-responsive pt-24 lg:pt-28 pb-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">

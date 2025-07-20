@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { 
   FaUsers, 
   FaUserEdit, 
@@ -34,9 +34,34 @@ const UserManagementPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  
+  // Detect if this is the agents page
+  const isAgentsPage = location.pathname.includes('/admin/agents');
+  
+  // Reset filters when route changes
+  useEffect(() => {
+    console.log('Route changed:', { isAgentsPage, pathname: location.pathname });
+    setSelectedRole(isAgentsPage ? 'agent' : '');
+    setSearchTerm('');
+    setSelectedStatus('');
+    setSelectedUsers([]);
+    // Invalidate and refetch users when route changes
+    queryClient.invalidateQueries(['adminUsers']);
+  }, [isAgentsPage, queryClient]);
+  
+  // Debug effect to track filter changes
+  useEffect(() => {
+    console.log('Filters changed:', { 
+      isAgentsPage, 
+      searchTerm, 
+      selectedRole, 
+      selectedStatus 
+    });
+  }, [isAgentsPage, searchTerm, selectedRole, selectedStatus]);
   
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedRole, setSelectedRole] = useState(isAgentsPage ? 'agent' : '');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -48,7 +73,7 @@ const UserManagementPage = () => {
     email: '',
     phone: '',
     password: '',
-    role: 'tenant',
+    role: isAgentsPage ? 'agent' : 'tenant',
     gender: '',
     address: {
       city: '',
@@ -65,7 +90,7 @@ const UserManagementPage = () => {
 
   // Fetch users
   const { data: usersData, isLoading: usersLoading, refetch: refetchUsers } = useQuery(
-    ['adminUsers', searchTerm, selectedRole, selectedStatus],
+    ['adminUsers', isAgentsPage, searchTerm, selectedRole, selectedStatus],
     async () => {
       const params = new URLSearchParams();
       if (searchTerm) params.append('search', searchTerm);
@@ -109,7 +134,7 @@ const UserManagementPage = () => {
           email: '',
           phone: '',
           password: '',
-          role: 'tenant',
+          role: isAgentsPage ? 'agent' : 'tenant',
           gender: '',
           address: {
             city: '',
@@ -252,7 +277,7 @@ const UserManagementPage = () => {
   if (id && userLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="container-responsive py-8">
+        <div className="container-responsive pt-24 lg:pt-28 pb-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-4"></div>
             <div className="h-64 bg-gray-200 rounded"></div>
@@ -264,13 +289,20 @@ const UserManagementPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container-responsive py-8">
+      <div className="container-responsive pt-24 lg:pt-28 pb-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
-              <p className="text-gray-600">Manage platform users and their permissions</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {isAgentsPage ? 'Agent Management' : 'User Management'}
+              </h1>
+              <p className="text-gray-600">
+                {isAgentsPage 
+                  ? 'Manage and verify real estate agents' 
+                  : 'Manage platform users and their permissions'
+                }
+              </p>
             </div>
             <div className="flex space-x-3">
               <button
@@ -278,7 +310,7 @@ const UserManagementPage = () => {
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
               >
                 <FaUserPlus />
-                <span>Add User</span>
+                <span>{isAgentsPage ? 'Add Agent' : 'Add User'}</span>
               </button>
               <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
                 <FaDownload />
@@ -299,14 +331,18 @@ const UserManagementPage = () => {
               </Link>
               <Link
                 to="/admin/users"
-                className="flex items-center space-x-2 text-blue-600 font-medium"
+                className={`flex items-center space-x-2 transition-colors ${
+                  !isAgentsPage ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-blue-600'
+                }`}
               >
                 <FaUsers />
                 <span>User Management</span>
               </Link>
               <Link
                 to="/admin/agents"
-                className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
+                className={`flex items-center space-x-2 transition-colors ${
+                  isAgentsPage ? 'text-green-600 font-medium' : 'text-gray-600 hover:text-green-600'
+                }`}
               >
                 <FaUserShield />
                 <span>Agent Management</span>
@@ -329,7 +365,7 @@ const UserManagementPage = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder={isAgentsPage ? "Search agents..." : "Search users..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -340,11 +376,18 @@ const UserManagementPage = () => {
               onChange={(e) => setSelectedRole(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">All Roles</option>
-              <option value="admin">Admin</option>
-              <option value="agent">Agent</option>
-              <option value="owner">Owner</option>
-              <option value="tenant">Tenant</option>
+              <option value="">{isAgentsPage ? "All Agents" : "All Roles"}</option>
+              {!isAgentsPage && (
+                <>
+                  <option value="admin">Admin</option>
+                  <option value="agent">Agent</option>
+                  <option value="owner">Owner</option>
+                  <option value="tenant">Tenant</option>
+                </>
+              )}
+              {isAgentsPage && (
+                <option value="agent">Agent</option>
+              )}
             </select>
             <select
               value={selectedStatus}
