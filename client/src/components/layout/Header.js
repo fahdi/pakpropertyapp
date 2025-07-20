@@ -64,10 +64,10 @@ const Header = () => {
   // User menu items
   const userMenuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: FaHome },
-    { name: 'My Properties', path: '/my-properties', icon: FaBuilding, roles: ['owner', 'agent'] },
-    { name: 'Saved Properties', path: '/saved-properties', icon: FaHeart },
-    { name: 'Inquiries', path: '/inquiries', icon: FaEnvelope },
-    { name: 'Profile', path: '/profile', icon: FaUser }
+    { name: 'My Properties', path: '/dashboard/my-properties', icon: FaBuilding, roles: ['owner', 'agent'] },
+    { name: 'Saved Properties', path: '/dashboard/saved-properties', icon: FaHeart },
+    { name: 'Inquiries', path: '/dashboard/inquiries', icon: FaEnvelope },
+    { name: 'Profile', path: '/dashboard/profile', icon: FaUser }
   ];
 
   return (

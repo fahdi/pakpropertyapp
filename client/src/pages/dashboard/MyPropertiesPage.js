@@ -212,7 +212,7 @@ const MyPropertiesPage = () => {
                 </p>
               </div>
               <Link
-                to="/add-property"
+                to="/dashboard/add-property"
                 className="btn btn-primary mt-4 md:mt-0"
               >
                 <FaPlus className="mr-2" />
@@ -340,7 +340,7 @@ const MyPropertiesPage = () => {
                 }
               </p>
               {filter === 'all' && (
-                <Link to="/add-property" className="btn btn-primary">
+                <Link to="/dashboard/add-property" className="btn btn-primary">
                   <FaPlus className="mr-2" />
                   Add Your First Property
                 </Link>
@@ -448,7 +448,7 @@ const MyPropertiesPage = () => {
                           View
                         </Link>
                         <Link
-                          to={`/edit-property/${property._id}`}
+                          to={`/dashboard/edit-property/${property._id}`}
                           className="btn btn-outline btn-sm"
                         >
                           <FaEdit className="mr-1" />

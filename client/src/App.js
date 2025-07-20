@@ -1,9 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation, HashRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './contexts/AuthContext';
-import { PropertyProvider } from './contexts/PropertyContext';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useResizeObserverFix } from './utils/useResizeObserverFix';
 
 // Import pages
@@ -29,15 +25,7 @@ import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ScrollToTop from './components/common/ScrollToTop';
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+
 
 // Global Error Boundary for ResizeObserver errors
 class ResizeObserverErrorBoundary extends React.Component {
@@ -72,7 +60,6 @@ class ResizeObserverErrorBoundary extends React.Component {
 
 // Navigation-specific ResizeObserver handler (must be inside Router context)
 const NavigationResizeObserverHandler = ({ children }) => {
-  const navigate = useNavigate();
   const location = useLocation();
   
   // Use the custom hook
@@ -133,8 +120,9 @@ const NavigationResizeObserverHandler = ({ children }) => {
   return children;
 };
 
-// Main app content component (inside Router context)
-const AppContent = () => {
+
+
+function App() {
   return (
     <ResizeObserverErrorBoundary>
       <NavigationResizeObserverHandler>
@@ -157,12 +145,6 @@ const AppContent = () => {
               <Route path="/dashboard/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
               <Route path="/dashboard/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              {/* Direct routes without dashboard prefix */}
-              <Route path="/my-properties" element={<ProtectedRoute><MyPropertiesPage /></ProtectedRoute>} />
-              <Route path="/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
-              <Route path="/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              <Route path="/add-property" element={<ProtectedRoute><AddPropertyPage /></ProtectedRoute>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
@@ -171,28 +153,6 @@ const AppContent = () => {
       </NavigationResizeObserverHandler>
     </ResizeObserverErrorBoundary>
   );
-};
-
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <PropertyProvider>
-          <AppContent />
-          <Toaster 
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-            }}
-          />
-        </PropertyProvider>
-      </AuthProvider>
-    </QueryClientProvider>
-  );
 }
 
-export default App; 
+export default App; // Test hot reloading

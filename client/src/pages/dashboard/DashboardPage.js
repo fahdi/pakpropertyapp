@@ -48,28 +48,28 @@ const DashboardPage = () => {
       value: dashboardData?.propertiesCount || 0,
       icon: FaBuilding,
       color: 'bg-blue-500',
-      link: '/my-properties'
+      link: '/dashboard/my-properties'
     },
     {
       title: 'Inquiries',
       value: dashboardData?.inquiriesCount || 0,
       icon: FaEnvelope,
       color: 'bg-green-500',
-      link: '/inquiries'
+      link: '/dashboard/inquiries'
     },
     {
       title: 'Saved Properties',
       value: dashboardData?.savedCount || 0,
       icon: FaHeart,
       color: 'bg-red-500',
-      link: '/saved-properties'
+      link: '/dashboard/saved-properties'
     },
     {
       title: 'Profile Views',
       value: dashboardData?.profileViews || 0,
       icon: FaEye,
       color: 'bg-purple-500',
-      link: '/profile'
+      link: '/dashboard/profile'
     }
   ];
 
@@ -79,7 +79,7 @@ const DashboardPage = () => {
       description: 'List a new property for rent',
       icon: FaPlus,
       color: 'bg-blue-600',
-      link: '/add-property',
+      link: '/dashboard/add-property',
       roles: ['owner', 'agent']
     },
     {
@@ -101,7 +101,7 @@ const DashboardPage = () => {
       description: 'Manage your account',
       icon: FaCog,
       color: 'bg-gray-600',
-      link: '/profile'
+      link: '/dashboard/profile'
     }
   ];
 

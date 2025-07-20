@@ -14,8 +14,8 @@ const { sendEmail } = require('../services/emailService');
 
 const router = express.Router();
 
-// Rate limiting for auth routes - Disabled for development
-// const authLimiter = rateLimit(authRateLimit);
+// Rate limiting for auth routes
+const authLimiter = rateLimit(authRateLimit);
 
 // TEMP: Debug route to list all users
 router.get('/debug-users', async (req, res) => {
