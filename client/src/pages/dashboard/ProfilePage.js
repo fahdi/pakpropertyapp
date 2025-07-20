@@ -192,7 +192,7 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container-responsive py-8">
+      <div className="container-responsive pt-24 lg:pt-28 pb-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <motion.div

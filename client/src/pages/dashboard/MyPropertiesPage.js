@@ -148,7 +148,7 @@ const MyPropertiesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
         <div className="container-responsive">
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
@@ -177,7 +177,7 @@ const MyPropertiesPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
         <div className="container-responsive">
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -197,7 +197,7 @@ const MyPropertiesPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
       <div className="container-responsive">
         <div className="max-w-7xl mx-auto">
           {/* Header */}

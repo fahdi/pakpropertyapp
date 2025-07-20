@@ -293,7 +293,7 @@ const EditPropertyPage = () => {
 
   if (fetchingProperty || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
         <div className="container-responsive">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -309,7 +309,7 @@ const EditPropertyPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
         <div className="container-responsive">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -329,7 +329,7 @@ const EditPropertyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 pt-24 lg:pt-28 pb-8">
       <div className="container-responsive">
         <div className="max-w-4xl mx-auto">
           {/* Header */}

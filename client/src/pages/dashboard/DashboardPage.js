@@ -151,7 +151,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container-responsive py-8">
+      <div className="container-responsive pt-24 lg:pt-28 pb-8">
         {/* Welcome Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
