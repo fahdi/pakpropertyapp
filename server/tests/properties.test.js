@@ -432,4 +432,138 @@ describe('Properties API', () => {
       expect(response.body.success).toBe(false);
     });
   });
+
+  describe('PATCH /api/properties/:id/status', () => {
+    it('should update property status to rented', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/status`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ status: 'rented' })
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.status).toBe('rented');
+      expect(response.body.message).toContain('updated successfully');
+    });
+
+    it('should update property status to available', async () => {
+      // First set to rented
+      testProperty.status = 'rented';
+      await testProperty.save();
+
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/status`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ status: 'available' })
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.status).toBe('available');
+      expect(response.body.message).toContain('updated successfully');
+    });
+
+    it('should fail with invalid status', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/status`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ status: 'invalid-status' })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.errors).toBeDefined();
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/status`)
+        .send({ status: 'rented' })
+        .expect(401);
+
+      expect(response.body.success).toBe(false);
+    });
+
+    it('should fail when user is not the owner', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/status`)
+        .set('Authorization', `Bearer ${tenantToken}`)
+        .send({ status: 'rented' })
+        .expect(403);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toContain('not authorized');
+    });
+
+    it('should fail with non-existent property', async () => {
+      const fakeId = '507f1f77bcf86cd799439011';
+      const response = await request(app)
+        .patch(`/api/properties/${fakeId}/status`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ status: 'rented' })
+        .expect(404);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toContain('not found');
+    });
+  });
+
+  describe('PATCH /api/properties/:id/featured', () => {
+    it('should update property featured status to true', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/featured`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ isFeatured: true })
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.isFeatured).toBe(true);
+      expect(response.body.message).toContain('updated successfully');
+    });
+
+    it('should update property featured status to false', async () => {
+      // First set to featured
+      testProperty.isFeatured = true;
+      await testProperty.save();
+
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/featured`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ isFeatured: false })
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.isFeatured).toBe(false);
+      expect(response.body.message).toContain('updated successfully');
+    });
+
+    it('should fail with invalid isFeatured value', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/featured`)
+        .set('Authorization', `Bearer ${ownerToken}`)
+        .send({ isFeatured: 'invalid' })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.errors).toBeDefined();
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/featured`)
+        .send({ isFeatured: true })
+        .expect(401);
+
+      expect(response.body.success).toBe(false);
+    });
+
+    it('should fail when user is not the owner', async () => {
+      const response = await request(app)
+        .patch(`/api/properties/${testProperty._id}/featured`)
+        .set('Authorization', `Bearer ${tenantToken}`)
+        .send({ isFeatured: true })
+        .expect(403);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toContain('Not authorized');
+    });
+  });
 }); 

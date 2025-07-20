@@ -226,6 +226,156 @@ router.get('/my-properties', protect, authorize('owner', 'agent', 'admin'), asyn
   }
 });
 
+// @desc    Update property status
+// @route   PATCH /api/properties/:id/status
+// @access  Private (Owner/Agent)
+router.patch('/:id/status', protect, authorize('owner', 'agent', 'admin'), [
+  body('status')
+    .isIn(['available', 'rented', 'under-maintenance', 'reserved'])
+    .withMessage('Invalid status')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const { status } = req.body;
+
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: 'Property not found'
+      });
+    }
+
+    // Check ownership
+    if (property.owner.toString() !== req.user.id && property.agent?.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to update this property'
+      });
+    }
+
+    property.status = status;
+    await property.save();
+
+    res.json({
+      success: true,
+      message: 'Property status updated successfully',
+      data: property
+    });
+  } catch (error) {
+    console.error('Update property status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating property status'
+    });
+  }
+});
+
+// @desc    Update property featured status
+// @route   PATCH /api/properties/:id/featured
+// @access  Private (Owner/Agent)
+router.patch('/:id/featured', protect, authorize('owner', 'agent', 'admin'), [
+  body('isFeatured')
+    .isBoolean()
+    .withMessage('isFeatured must be boolean')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const { isFeatured } = req.body;
+
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: 'Property not found'
+      });
+    }
+
+    // Check ownership
+    if (property.owner.toString() !== req.user.id && property.agent?.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to update this property'
+      });
+    }
+
+    property.isFeatured = isFeatured;
+    await property.save();
+
+    res.json({
+      success: true,
+      message: 'Property featured status updated successfully',
+      data: property
+    });
+  } catch (error) {
+    console.error('Update property featured status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating property featured status'
+    });
+  }
+});
+
+// @desc    Get property analytics
+// @route   GET /api/properties/:id/analytics
+// @access  Private (Owner/Agent)
+router.get('/:id/analytics', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: 'Property not found'
+      });
+    }
+
+    // Check ownership
+    if (property.owner.toString() !== req.user.id && property.agent?.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to view analytics for this property'
+      });
+    }
+
+    // Get analytics data
+    const analytics = {
+      views: property.views,
+      inquiries: property.inquiries,
+      savedCount: property.savedCount,
+      daysListed: Math.floor((Date.now() - property.createdAt) / (1000 * 60 * 60 * 24)),
+      averageViewsPerDay: property.views > 0 ? (property.inquiries / property.views * 100).toFixed(2) : 0
+    };
+
+    res.json({
+      success: true,
+      data: analytics
+    });
+  } catch (error) {
+    console.error('Get property analytics error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching property analytics'
+    });
+  }
+});
+
 // @desc    Get single property
 // @route   GET /api/properties/:id
 // @access  Public
@@ -475,50 +625,6 @@ router.delete('/:id', protect, authorize('owner', 'agent', 'admin'), async (req,
     res.status(500).json({
       success: false,
       message: 'Error deleting property'
-    });
-  }
-});
-
-// @desc    Get property analytics
-// @route   GET /api/properties/:id/analytics
-// @access  Private (Owner/Agent)
-router.get('/:id/analytics', protect, authorize('owner', 'agent', 'admin'), async (req, res) => {
-  try {
-    const property = await Property.findById(req.params.id);
-
-    if (!property) {
-      return res.status(404).json({
-        success: false,
-        message: 'Property not found'
-      });
-    }
-
-    // Check ownership
-    if (property.owner.toString() !== req.user.id && property.agent?.toString() !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: 'Not authorized to view analytics for this property'
-      });
-    }
-
-    // Get analytics data
-    const analytics = {
-      views: property.views,
-      inquiries: property.inquiries,
-      savedCount: property.savedCount,
-      daysListed: Math.floor((Date.now() - property.createdAt) / (1000 * 60 * 60 * 24)),
-      averageViewsPerDay: property.views > 0 ? (property.inquiries / property.views * 100).toFixed(2) : 0
-    };
-
-    res.json({
-      success: true,
-      data: analytics
-    });
-  } catch (error) {
-    console.error('Get property analytics error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching property analytics'
     });
   }
 });
