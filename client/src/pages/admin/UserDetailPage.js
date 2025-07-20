@@ -21,7 +21,8 @@ import {
   FaHome,
   FaEnvelopeOpen,
   FaStar,
-  FaChartLine
+  FaChartLine,
+  FaUsers
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import api from '../../utils/axios';
@@ -234,6 +235,31 @@ const UserDetailPage = () => {
                 <FaTrash />
                 <span>Delete</span>
               </button>
+            </div>
+          </div>
+          
+          {/* Breadcrumb Navigation */}
+          <div className="mt-4 bg-white rounded-lg shadow-lg p-4">
+            <div className="flex items-center space-x-4 text-sm">
+              <Link
+                to="/admin"
+                className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <FaChartLine />
+                <span>Dashboard</span>
+              </Link>
+              <span className="text-gray-400">/</span>
+              <Link
+                to="/admin/users"
+                className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <FaUsers />
+                <span>User Management</span>
+              </Link>
+              <span className="text-gray-400">/</span>
+              <span className="text-gray-900 font-medium">
+                {user.firstName} {user.lastName}
+              </span>
             </div>
           </div>
         </div>

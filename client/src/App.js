@@ -155,6 +155,8 @@ function App() {
               <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
               <Route path="/admin/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
               <Route path="/admin/users/:id" element={<ProtectedRoute><UserDetailPage /></ProtectedRoute>} />
+              <Route path="/admin/agents" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
+              <Route path="/admin/analytics" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
               
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

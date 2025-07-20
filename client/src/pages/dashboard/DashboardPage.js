@@ -102,6 +102,31 @@ const DashboardPage = () => {
       icon: FaCog,
       color: 'bg-gray-600',
       link: '/dashboard/profile'
+    },
+    // Admin actions
+    {
+      title: 'User Management',
+      description: 'Manage all users and permissions',
+      icon: FaUser,
+      color: 'bg-red-600',
+      link: '/admin/users',
+      roles: ['admin']
+    },
+    {
+      title: 'Agent Management',
+      description: 'Verify and manage agents',
+      icon: FaShieldAlt,
+      color: 'bg-orange-600',
+      link: '/admin/agents',
+      roles: ['admin']
+    },
+    {
+      title: 'Analytics',
+      description: 'View platform analytics',
+      icon: FaChartLine,
+      color: 'bg-indigo-600',
+      link: '/admin/analytics',
+      roles: ['admin']
     }
   ];
 
@@ -179,6 +204,15 @@ const DashboardPage = () => {
                     <FaShieldAlt />
                     <span>Verified</span>
                   </div>
+                )}
+                {user?.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
+                  >
+                    <FaShieldAlt />
+                    <span>Admin Dashboard</span>
+                  </Link>
                 )}
               </div>
             </div>
@@ -282,6 +316,45 @@ const DashboardPage = () => {
         </div>
 
         {/* Additional Sections based on user role */}
+        {user?.role === 'admin' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-8"
+          >
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Admin Panel</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                <Link
+                  to="/admin/users"
+                  className="text-center p-4 border border-gray-200 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors"
+                >
+                  <FaUser className="text-3xl text-red-600 mx-auto mb-3" />
+                  <h3 className="font-semibold text-gray-900 mb-2">User Management</h3>
+                  <p className="text-sm text-gray-600">Manage all users and permissions</p>
+                </Link>
+                <Link
+                  to="/admin/agents"
+                  className="text-center p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
+                >
+                  <FaShieldAlt className="text-3xl text-orange-600 mx-auto mb-3" />
+                  <h3 className="font-semibold text-gray-900 mb-2">Agent Management</h3>
+                  <p className="text-sm text-gray-600">Verify and manage agents</p>
+                </Link>
+                <Link
+                  to="/admin/analytics"
+                  className="text-center p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition-colors"
+                >
+                  <FaChartLine className="text-3xl text-indigo-600 mx-auto mb-3" />
+                  <h3 className="font-semibold text-gray-900 mb-2">Analytics</h3>
+                  <p className="text-sm text-gray-600">View platform analytics</p>
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {user?.role === 'owner' || user?.role === 'agent' ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

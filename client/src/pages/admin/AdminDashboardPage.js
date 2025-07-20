@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   FaUsers, 
   FaBuilding, 
@@ -17,7 +17,8 @@ import {
   FaSearch,
   FaFilter,
   FaDownload,
-  FaPrint
+  FaPrint,
+  FaArrowLeft
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import api from '../../utils/axios';
@@ -28,6 +29,7 @@ const AdminDashboardPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const navigate = useNavigate();
 
   // Fetch dashboard data
   const { data: dashboardData, isLoading: dashboardLoading } = useQuery(
@@ -141,8 +143,63 @@ const AdminDashboardPage = () => {
       <div className="container-responsive py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage users, properties, and platform analytics</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+              <p className="text-gray-600">Manage users, properties, and platform analytics</p>
+            </div>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => navigate('/admin/users')}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
+                <FaUsers />
+                <span>Manage Users</span>
+              </button>
+              <Link
+                to="/dashboard"
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
+              >
+                <FaArrowLeft />
+                <span>Back to Dashboard</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Admin Navigation Bar */}
+        <div className="bg-white rounded-lg shadow-lg p-4 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Admin Navigation</h3>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => navigate('/admin/users')}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
+              <FaUsers />
+              <span>User Management</span>
+            </button>
+            <button
+              onClick={() => navigate('/admin/agents')}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+            >
+              <FaUserShield />
+              <span>Agent Management</span>
+            </button>
+            <button
+              onClick={() => navigate('/admin/analytics')}
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
+            >
+              <FaChartLine />
+              <span>Analytics</span>
+            </button>
+            <Link
+              to="/dashboard"
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
+            >
+              <FaArrowLeft />
+              <span>Back to Dashboard</span>
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -221,6 +278,75 @@ const AdminDashboardPage = () => {
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Quick Action Cards */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-blue-200"
+              onClick={() => navigate('/admin/users')}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <FaUsers className="text-2xl text-blue-600" />
+                </div>
+                <FaArrowLeft className="text-gray-400 transform rotate-180" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">User Management</h3>
+              <p className="text-gray-600 mb-4">Manage all users, verify agents, and control user permissions</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">Total Users: {dashboardData?.stats?.totalUsers || 0}</span>
+                <span className="text-blue-600 font-medium">Click to Manage →</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-green-200"
+              onClick={() => navigate('/admin/agents')}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <FaUserShield className="text-2xl text-green-600" />
+                </div>
+                <FaArrowLeft className="text-gray-400 transform rotate-180" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Agent Management</h3>
+              <p className="text-gray-600 mb-4">Verify agents, view performance metrics, and manage licenses</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">Active Agents: {dashboardData?.userStats?.find(s => s._id === 'agent')?.count || 0}</span>
+                <span className="text-green-600 font-medium">Click to Manage →</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-purple-200"
+              onClick={() => navigate('/admin/analytics')}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <FaChartLine className="text-2xl text-purple-600" />
+                </div>
+                <FaArrowLeft className="text-gray-400 transform rotate-180" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Analytics</h3>
+              <p className="text-gray-600 mb-4">View detailed analytics, user growth, and platform insights</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">30 Day Period</span>
+                <span className="text-purple-600 font-medium">Click to View →</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Navigation Tabs */}

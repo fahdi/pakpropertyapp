@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { 
   FaUsers, 
   FaUserEdit, 
@@ -21,7 +21,10 @@ import {
   FaCalendar,
   FaArrowLeft,
   FaSave,
-  FaTimes
+  FaTimes,
+  FaChartLine,
+  FaUserShield,
+  FaCog
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../utils/axios';
@@ -281,6 +284,40 @@ const UserManagementPage = () => {
                 <FaDownload />
                 <span>Export</span>
               </button>
+            </div>
+          </div>
+          
+          {/* Admin Navigation */}
+          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
+            <div className="flex items-center space-x-6">
+              <Link
+                to="/admin"
+                className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <FaChartLine />
+                <span>Dashboard</span>
+              </Link>
+              <Link
+                to="/admin/users"
+                className="flex items-center space-x-2 text-blue-600 font-medium"
+              >
+                <FaUsers />
+                <span>User Management</span>
+              </Link>
+              <Link
+                to="/admin/agents"
+                className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
+              >
+                <FaUserShield />
+                <span>Agent Management</span>
+              </Link>
+              <Link
+                to="/admin/analytics"
+                className="flex items-center space-x-2 text-gray-600 hover:text-purple-600 transition-colors"
+              >
+                <FaCog />
+                <span>Analytics</span>
+              </Link>
             </div>
           </div>
         </div>

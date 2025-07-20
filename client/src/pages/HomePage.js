@@ -526,98 +526,119 @@ const HomePage = () => {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <Card className="h-full hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div className="relative overflow-hidden rounded-t-2xl">
-                      <div className="h-48 bg-primary-500 relative flex items-center justify-center">
-                        {property.images && property.images.length > 0 && property.images[0] ? (
-                          <img
-                            src={property.images[0].url}
-                            alt={property.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              if (e.target.nextSibling) {
-                                e.target.nextSibling.style.display = 'flex';
-                              }
+                  <Link
+                    to={`/properties/${property._id}`}
+                    className="block h-full"
+                  >
+                    <Card className="h-full hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
+                      <div className="relative overflow-hidden rounded-t-2xl">
+                        <div className="h-48 bg-primary-500 relative flex items-center justify-center">
+                          {property.images && property.images.length > 0 && property.images[0] ? (
+                            <img
+                              src={property.images[0].url}
+                              alt={property.title}
+                              loading="lazy"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                if (e.target.nextSibling) {
+                                  e.target.nextSibling.style.display = 'flex';
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span className="text-white text-5xl font-bold">{property.title?.charAt(0) || 'P'}</span>
+                          )}
+                        </div>
+                        <div className="absolute top-4 right-4">
+                          <Badge variant="success" className="text-xs bg-accent-400 text-neutral-900">
+                            {property.propertyType}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-4 left-4">
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
                             }}
-                          />
-                        ) : (
-                          <span className="text-white text-5xl font-bold">{property.title?.charAt(0) || 'P'}</span>
-                        )}
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <Badge variant="success" className="text-xs bg-accent-400 text-neutral-900">
-                          {property.propertyType}
-                        </Badge>
-                      </div>
-                      <div className="absolute top-4 left-4">
-                        <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors">
-                          <FaHeart className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                            {property.title}
-                          </h3>
-                          <div className="flex items-center text-gray-600 mb-3">
-                            <FaMapMarkerAlt className="mr-2 text-blue-500" />
-                            <span>{property.location?.city}, {property.location?.area}</span>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-accent-400">
-                            PKR {property.price?.toLocaleString()}
-                          </div>
-                          <div className="text-sm text-gray-500">per month</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-                        {property.specifications?.bedrooms && (
-                          <div className="flex items-center">
-                            <FaBed className="mr-2 text-blue-500" />
-                            <span className="font-medium">{property.specifications.bedrooms} Beds</span>
-                          </div>
-                        )}
-                        {property.specifications?.bathrooms && (
-                          <div className="flex items-center">
-                            <FaBath className="mr-2 text-blue-500" />
-                            <span className="font-medium">{property.specifications.bathrooms} Baths</span>
-                          </div>
-                        )}
-                        {property.area?.size && (
-                          <div className="flex items-center">
-                            <FaRulerCombined className="mr-2 text-blue-500" />
-                            <span className="font-medium">{property.area.size} {property.area.unit}</span>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <Link
-                          to={`/properties/${property._id}`}
-                          className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold group"
-                          aria-label={`View details for ${property.title}`}
-                        >
-                          View Details
-                          <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                        <div className="flex space-x-2">
-                          <button className="p-3 text-green-600 hover:bg-green-50 rounded-full transition-colors" aria-label="Contact via WhatsApp">
-                            <FaWhatsapp />
-                          </button>
-                          <button className="p-3 text-blue-600 hover:bg-blue-50 rounded-full transition-colors" aria-label="Contact via Phone">
-                            <FaPhone />
+                            className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                          >
+                            <FaHeart className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                      
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                              {property.title}
+                            </h3>
+                            <div className="flex items-center text-gray-600 mb-3">
+                              <FaMapMarkerAlt className="mr-2 text-blue-500" />
+                              <span>{property.location?.city}, {property.location?.area}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-accent-400">
+                              PKR {property.price?.toLocaleString()}
+                            </div>
+                            <div className="text-sm text-gray-500">per month</div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+                          {property.specifications?.bedrooms && (
+                            <div className="flex items-center">
+                              <FaBed className="mr-2 text-blue-500" />
+                              <span className="font-medium">{property.specifications.bedrooms} Beds</span>
+                            </div>
+                          )}
+                          {property.specifications?.bathrooms && (
+                            <div className="flex items-center">
+                              <FaBath className="mr-2 text-blue-500" />
+                              <span className="font-medium">{property.specifications.bathrooms} Baths</span>
+                            </div>
+                          )}
+                          {property.area?.size && (
+                            <div className="flex items-center">
+                              <FaRulerCombined className="mr-2 text-blue-500" />
+                              <span className="font-medium">{property.area.size} {property.area.unit}</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold group">
+                            View Details
+                            <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                          <div className="flex space-x-2">
+                            <button 
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              className="p-3 text-green-600 hover:bg-green-50 rounded-full transition-colors" 
+                              aria-label="Contact via WhatsApp"
+                            >
+                              <FaWhatsapp />
+                            </button>
+                            <button 
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              className="p-3 text-blue-600 hover:bg-blue-50 rounded-full transition-colors" 
+                              aria-label="Contact via Phone"
+                            >
+                              <FaPhone />
+                            </button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
             </div>

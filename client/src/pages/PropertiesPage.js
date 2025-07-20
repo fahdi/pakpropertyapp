@@ -209,132 +209,17 @@ const PropertiesPage = () => {
 
   // Property card component
   const PropertyCard = ({ property }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+    <Link
+      to={`/properties/${property._id}`}
+      className="block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
     >
-      <div className="relative h-48 bg-gray-200">
-        {property.images?.[0] && (
-          <img
-            src={property.images[0].url}
-            alt={property.title}
-            className="w-full h-full object-cover"
-          />
-        )}
-        <div className="absolute top-4 right-4 flex space-x-2">
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleSaveProperty(property._id);
-            }}
-            disabled={savePropertyMutation.isLoading || removeFromSavedMutation.isLoading}
-            className={`bg-white/80 hover:bg-white p-2 rounded-full transition-colors ${
-              savedProperties?.some(saved => saved._id === property._id) 
-                ? 'text-red-500' 
-                : 'text-gray-600'
-            }`}
-            title={savedProperties?.some(saved => saved._id === property._id) ? 'Remove from saved' : 'Save property'}
-          >
-            <FaHeart className={savedProperties?.some(saved => saved._id === property._id) ? 'fill-current' : ''} />
-          </button>
-          <Link
-            to={`/properties/${property._id}`}
-            className="bg-white/80 hover:bg-white p-2 rounded-full transition-colors"
-          >
-            <FaEye className="text-gray-600" />
-          </Link>
-        </div>
-        {property.isFeatured && (
-          <div className="absolute top-4 left-4 bg-accent-400 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
-            Featured
-          </div>
-        )}
-        {property.isVerified && (
-          <div className="absolute bottom-4 left-4 bg-success-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
-            Verified
-          </div>
-        )}
-      </div>
-      
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 flex-1 min-w-0 mr-3">
-            {property.title}
-          </h3>
-          <div className="text-lg font-bold text-primary-600 flex-shrink-0">
-            PKR {property.rent?.toLocaleString()}
-          </div>
-        </div>
-        
-        <div className="flex items-center text-gray-600 mb-3">
-          <FaMapMarkerAlt className="mr-1 flex-shrink-0" />
-          <span className="text-sm truncate">
-            {property.location?.area}, {property.location?.city}
-          </span>
-        </div>
-        
-        <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
-          {property.specifications?.bedrooms && (
-            <div className="flex items-center">
-              <FaBed className="mr-1 flex-shrink-0" />
-              <span>{property.specifications.bedrooms} Beds</span>
-            </div>
-          )}
-          {property.specifications?.bathrooms && (
-            <div className="flex items-center">
-              <FaBath className="mr-1 flex-shrink-0" />
-              <span>{property.specifications.bathrooms} Baths</span>
-            </div>
-          )}
-          {property.area?.size && (
-            <div className="flex items-center">
-              <FaRulerCombined className="mr-1 flex-shrink-0" />
-              <span className="truncate">{property.area.size} {property.area.unit}</span>
-            </div>
-          )}
-        </div>
-        
-        {property.features?.furnishing && (
-          <div className="mb-3">
-            <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-              {property.features.furnishing}
-            </span>
-          </div>
-        )}
-        
-        <div className="flex items-center justify-between">
-          <Link
-            to={`/properties/${property._id}`}
-            className="text-blue-600 hover:text-blue-700 font-medium"
-          >
-            View Details
-          </Link>
-          <div className="flex space-x-2">
-            <button className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors">
-              <FaWhatsapp />
-            </button>
-            <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
-              <FaPhone />
-            </button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  // Property list item component
-  const PropertyListItem = ({ property }) => (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
-    >
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="relative w-full lg:w-64 h-48 bg-gray-200 rounded-lg overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="h-full"
+      >
+        <div className="relative h-48 bg-gray-200">
           {property.images?.[0] && (
             <img
               src={property.images[0].url}
@@ -342,88 +227,228 @@ const PropertiesPage = () => {
               className="w-full h-full object-cover"
             />
           )}
+          <div className="absolute top-4 right-4 flex space-x-2">
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleSaveProperty(property._id);
+              }}
+              disabled={savePropertyMutation.isLoading || removeFromSavedMutation.isLoading}
+              className={`bg-white/80 hover:bg-white p-2 rounded-full transition-colors ${
+                savedProperties?.some(saved => saved._id === property._id) 
+                  ? 'text-red-500' 
+                  : 'text-gray-600'
+              }`}
+              title={savedProperties?.some(saved => saved._id === property._id) ? 'Remove from saved' : 'Save property'}
+            >
+              <FaHeart className={savedProperties?.some(saved => saved._id === property._id) ? 'fill-current' : ''} />
+            </button>
+            <div className="bg-white/80 hover:bg-white p-2 rounded-full transition-colors">
+              <FaEye className="text-gray-600" />
+            </div>
+          </div>
           {property.isFeatured && (
-            <div className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-medium">
+            <div className="absolute top-4 left-4 bg-accent-400 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
               Featured
+            </div>
+          )}
+          {property.isVerified && (
+            <div className="absolute bottom-4 left-4 bg-success-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-soft">
+              Verified
             </div>
           )}
         </div>
         
-        <div className="flex-1">
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {property.title}
-              </h3>
-              <div className="flex items-center text-gray-600 mb-3">
-                <FaMapMarkerAlt className="mr-1" />
-                <span>{property.location?.area}, {property.location?.city}</span>
-              </div>
-            </div>
-            <div className="text-2xl font-bold text-blue-600">
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 flex-1 min-w-0 mr-3">
+              {property.title}
+            </h3>
+            <div className="text-lg font-bold text-primary-600 flex-shrink-0">
               PKR {property.rent?.toLocaleString()}
             </div>
           </div>
           
-          <div className="flex items-center space-x-6 text-sm text-gray-600 mb-4">
+          <div className="flex items-center text-gray-600 mb-3">
+            <FaMapMarkerAlt className="mr-1 flex-shrink-0" />
+            <span className="text-sm truncate">
+              {property.location?.area}, {property.location?.city}
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
             {property.specifications?.bedrooms && (
               <div className="flex items-center">
-                <FaBed className="mr-1" />
-                <span>{property.specifications.bedrooms} Bedrooms</span>
+                <FaBed className="mr-1 flex-shrink-0" />
+                <span>{property.specifications.bedrooms} Beds</span>
               </div>
             )}
             {property.specifications?.bathrooms && (
               <div className="flex items-center">
-                <FaBath className="mr-1" />
-                <span>{property.specifications.bathrooms} Bathrooms</span>
+                <FaBath className="mr-1 flex-shrink-0" />
+                <span>{property.specifications.bathrooms} Baths</span>
               </div>
             )}
             {property.area?.size && (
               <div className="flex items-center">
-                <FaRulerCombined className="mr-1" />
-                <span>{property.area.size} {property.area.unit}</span>
+                <FaRulerCombined className="mr-1 flex-shrink-0" />
+                <span className="truncate">{property.area.size} {property.area.unit}</span>
               </div>
             )}
           </div>
           
-          <p className="text-gray-600 mb-4 line-clamp-2">
-            {property.shortDescription || property.description?.substring(0, 150)}...
-          </p>
+          {property.features?.furnishing && (
+            <div className="mb-3">
+              <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+                {property.features.furnishing}
+              </span>
+            </div>
+          )}
           
           <div className="flex items-center justify-between">
+            <span className="text-blue-600 hover:text-blue-700 font-medium">
+              View Details
+            </span>
             <div className="flex space-x-2">
-              {property.features?.furnishing && (
-                <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                  {property.features.furnishing}
-                </span>
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors"
+              >
+                <FaWhatsapp />
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+              >
+                <FaPhone />
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
+  );
+
+  // Property list item component
+  const PropertyListItem = ({ property }) => (
+    <Link
+      to={`/properties/${property._id}`}
+      className="block bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer"
+    >
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 20 }}
+        className="h-full"
+      >
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="relative w-full lg:w-64 h-48 bg-gray-200 rounded-lg overflow-hidden">
+            {property.images?.[0] && (
+              <img
+                src={property.images[0].url}
+                alt={property.title}
+                className="w-full h-full object-cover"
+              />
+            )}
+            {property.isFeatured && (
+              <div className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-medium">
+                Featured
+              </div>
+            )}
+          </div>
+          
+          <div className="flex-1">
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {property.title}
+                </h3>
+                <div className="flex items-center text-gray-600 mb-3">
+                  <FaMapMarkerAlt className="mr-1" />
+                  <span>{property.location?.area}, {property.location?.city}</span>
+                </div>
+              </div>
+              <div className="text-2xl font-bold text-blue-600">
+                PKR {property.rent?.toLocaleString()}
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-6 text-sm text-gray-600 mb-4">
+              {property.specifications?.bedrooms && (
+                <div className="flex items-center">
+                  <FaBed className="mr-1" />
+                  <span>{property.specifications.bedrooms} Bedrooms</span>
+                </div>
               )}
-              {property.features?.condition && (
-                <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                  {property.features.condition}
-                </span>
+              {property.specifications?.bathrooms && (
+                <div className="flex items-center">
+                  <FaBath className="mr-1" />
+                  <span>{property.specifications.bathrooms} Bathrooms</span>
+                </div>
+              )}
+              {property.area?.size && (
+                <div className="flex items-center">
+                  <FaRulerCombined className="mr-1" />
+                  <span>{property.area.size} {property.area.unit}</span>
+                </div>
               )}
             </div>
             
-            <div className="flex items-center space-x-3">
-              <Link
-                to={`/properties/${property._id}`}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                View Details
-              </Link>
+            <p className="text-gray-600 mb-4 line-clamp-2">
+              {property.shortDescription || property.description?.substring(0, 150)}...
+            </p>
+            
+            <div className="flex items-center justify-between">
               <div className="flex space-x-2">
-                <button className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors">
-                  <FaWhatsapp />
-                </button>
-                <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
-                  <FaPhone />
-                </button>
+                {property.features?.furnishing && (
+                  <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+                    {property.features.furnishing}
+                  </span>
+                )}
+                {property.features?.condition && (
+                  <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+                    {property.features.condition}
+                  </span>
+                )}
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <span className="text-blue-600 hover:text-blue-700 font-medium">
+                  View Details
+                </span>
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors"
+                  >
+                    <FaWhatsapp />
+                  </button>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                  >
+                    <FaPhone />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   );
 
   return (
