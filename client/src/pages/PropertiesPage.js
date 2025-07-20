@@ -179,18 +179,18 @@ const PropertiesPage = () => {
       </div>
       
       <div className="p-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gray-900 truncate">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 flex-1 min-w-0 mr-3">
             {property.title}
           </h3>
-          <div className="text-lg font-bold text-primary-600">
+          <div className="text-lg font-bold text-primary-600 flex-shrink-0">
             PKR {property.rent?.toLocaleString()}
           </div>
         </div>
         
         <div className="flex items-center text-gray-600 mb-3">
-          <FaMapMarkerAlt className="mr-1" />
-          <span className="text-sm">
+          <FaMapMarkerAlt className="mr-1 flex-shrink-0" />
+          <span className="text-sm truncate">
             {property.location?.area}, {property.location?.city}
           </span>
         </div>
@@ -198,20 +198,20 @@ const PropertiesPage = () => {
         <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
           {property.specifications?.bedrooms && (
             <div className="flex items-center">
-              <FaBed className="mr-1" />
+              <FaBed className="mr-1 flex-shrink-0" />
               <span>{property.specifications.bedrooms} Beds</span>
             </div>
           )}
           {property.specifications?.bathrooms && (
             <div className="flex items-center">
-              <FaBath className="mr-1" />
+              <FaBath className="mr-1 flex-shrink-0" />
               <span>{property.specifications.bathrooms} Baths</span>
             </div>
           )}
           {property.area?.size && (
             <div className="flex items-center">
-              <FaRulerCombined className="mr-1" />
-              <span>{property.area.size} {property.area.unit}</span>
+              <FaRulerCombined className="mr-1 flex-shrink-0" />
+              <span className="truncate">{property.area.size} {property.area.unit}</span>
             </div>
           )}
         </div>

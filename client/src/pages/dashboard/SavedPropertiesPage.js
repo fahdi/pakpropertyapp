@@ -349,51 +349,53 @@ const SavedPropertiesPage = () => {
 
                   {/* Property Details */}
                   <div className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 min-h-[3rem]">
                       {property.title}
                     </h3>
                     
                     <div className="flex items-center text-gray-600 mb-3">
-                      <FaMapMarkerAlt className="w-4 h-4 mr-1" />
-                      <span className="text-sm">{property.location.area}, {property.location.city}</span>
+                      <FaMapMarkerAlt className="w-4 h-4 mr-1 flex-shrink-0" />
+                      <span className="text-sm truncate">{property.location.area}, {property.location.city}</span>
                     </div>
 
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
                         {property.specifications.bedrooms > 0 && (
                           <div className="flex items-center">
-                            <FaBed className="w-4 h-4 mr-1" />
+                            <FaBed className="w-4 h-4 mr-1 flex-shrink-0" />
                             <span>{property.specifications.bedrooms}</span>
                           </div>
                         )}
                         {property.specifications.bathrooms > 0 && (
                           <div className="flex items-center">
-                            <FaBath className="w-4 h-4 mr-1" />
+                            <FaBath className="w-4 h-4 mr-1 flex-shrink-0" />
                             <span>{property.specifications.bathrooms}</span>
                           </div>
                         )}
                         <div className="flex items-center">
-                          <FaRulerCombined className="w-4 h-4 mr-1" />
-                          <span>{property.area.size} {property.area.unit}</span>
+                          <FaRulerCombined className="w-4 h-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{property.area.size} {property.area.unit}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {formatCurrency(property.rent)}
-                        </p>
-                        <p className="text-sm text-gray-600">per {property.rentType}</p>
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xl font-bold text-gray-900 truncate">
+                            {formatCurrency(property.rent)}
+                          </p>
+                          <p className="text-sm text-gray-600">per {property.rentType}</p>
+                        </div>
                       </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex space-x-2">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
                         <Link
                           to={`/properties/${property._id}`}
-                          className="btn btn-outline btn-sm"
+                          className="btn btn-outline btn-sm flex-1 mr-2"
                         >
                           <FaEye className="mr-1" />
                           View Details
@@ -401,17 +403,17 @@ const SavedPropertiesPage = () => {
                         
                         <Link
                           to={`/properties/${property._id}#contact`}
-                          className="btn btn-primary btn-sm"
+                          className="btn btn-primary btn-sm flex-1"
                         >
                           <FaEnvelope className="mr-1" />
                           Contact
                         </Link>
                       </div>
                       
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-between">
                         <button
                           onClick={() => handleShare(property)}
-                          className="btn btn-outline btn-sm"
+                          className="btn btn-outline btn-sm flex-1"
                         >
                           <FaShare className="mr-1" />
                           Share
