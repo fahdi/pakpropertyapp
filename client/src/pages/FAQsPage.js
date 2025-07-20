@@ -224,7 +224,7 @@ const FAQsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-20">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="container-responsive py-16">
