@@ -39,27 +39,7 @@ const UserManagementPage = () => {
   // Detect if this is the agents page
   const isAgentsPage = location.pathname.includes('/admin/agents');
   
-  // Reset filters when route changes
-  useEffect(() => {
-    console.log('Route changed:', { isAgentsPage, pathname: location.pathname });
-    setSelectedRole(isAgentsPage ? 'agent' : '');
-    setSearchTerm('');
-    setSelectedStatus('');
-    setSelectedUsers([]);
-    // Invalidate and refetch users when route changes
-    queryClient.invalidateQueries(['adminUsers']);
-  }, [isAgentsPage, queryClient]);
-  
-  // Debug effect to track filter changes
-  useEffect(() => {
-    console.log('Filters changed:', { 
-      isAgentsPage, 
-      searchTerm, 
-      selectedRole, 
-      selectedStatus 
-    });
-  }, [isAgentsPage, searchTerm, selectedRole, selectedStatus]);
-  
+  // Initialize state variables first
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState(isAgentsPage ? 'agent' : '');
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -87,7 +67,28 @@ const UserManagementPage = () => {
       specializations: []
     }
   });
-
+  
+  // Reset filters when route changes
+  useEffect(() => {
+    console.log('Route changed:', { isAgentsPage, pathname: location.pathname });
+    setSelectedRole(isAgentsPage ? 'agent' : '');
+    setSearchTerm('');
+    setSelectedStatus('');
+    setSelectedUsers([]);
+    // Invalidate and refetch users when route changes
+    queryClient.invalidateQueries(['adminUsers']);
+  }, [isAgentsPage, queryClient]);
+  
+  // Debug effect to track filter changes
+  useEffect(() => {
+    console.log('Filters changed:', { 
+      isAgentsPage, 
+      searchTerm, 
+      selectedRole, 
+      selectedStatus 
+    });
+  }, [isAgentsPage, searchTerm, selectedRole, selectedStatus]);
+  
   // Fetch users
   const { data: usersData, isLoading: usersLoading, refetch: refetchUsers } = useQuery(
     ['adminUsers', isAgentsPage, searchTerm, selectedRole, selectedStatus],
