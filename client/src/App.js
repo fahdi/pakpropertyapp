@@ -19,6 +19,16 @@ import InquiriesPage from './pages/dashboard/InquiriesPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
+// Import new pages
+import ServicesPage from './pages/ServicesPage';
+import HelpPage from './pages/HelpPage';
+import FAQsPage from './pages/FAQsPage';
+import SupportPage from './pages/SupportPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import CookiesPage from './pages/CookiesPage';
+import DataProtectionPage from './pages/DataProtectionPage';
+
 // Import admin pages
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import UserManagementPage from './pages/admin/UserManagementPage';
@@ -150,6 +160,21 @@ function App() {
               <Route path="/dashboard/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
               <Route path="/dashboard/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              
+              {/* Service Routes */}
+              <Route path="/services/:serviceType" element={<ServicesPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              
+              {/* Support Routes */}
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/faqs" element={<FAQsPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              
+              {/* Legal Routes */}
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/cookies" element={<CookiesPage />} />
+              <Route path="/data-protection" element={<DataProtectionPage />} />
               
               {/* Admin Routes */}
               <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
