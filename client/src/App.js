@@ -19,6 +19,11 @@ import InquiriesPage from './pages/dashboard/InquiriesPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
+// Import admin pages
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import UserManagementPage from './pages/admin/UserManagementPage';
+import UserDetailPage from './pages/admin/UserDetailPage';
+
 // Import components
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -145,6 +150,12 @@ function App() {
               <Route path="/dashboard/saved-properties" element={<ProtectedRoute><SavedPropertiesPage /></ProtectedRoute>} />
               <Route path="/dashboard/inquiries" element={<ProtectedRoute><InquiriesPage /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
+              <Route path="/admin/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
+              <Route path="/admin/users/:id" element={<ProtectedRoute><UserDetailPage /></ProtectedRoute>} />
+              
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
