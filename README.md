@@ -1,4 +1,4 @@
-# PakProperty - Pakistan's Leading Property Rental Platform
+# 🏠 PakProperty - Pakistan's Leading Property Rental Platform
 
 A comprehensive property rental platform designed specifically for the Pakistani market, connecting property owners, agents, and tenants through a secure, user-friendly web application.
 
@@ -25,38 +25,127 @@ A comprehensive property rental platform designed specifically for the Pakistani
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
+- **Docker & Docker Compose** (Recommended)
+- Node.js (v16 or higher) - for local development
 - MongoDB
 - Google Maps API key
 - Cloudinary account (for image uploads)
 
-### Installation
+## 🐳 Docker Setup (Recommended)
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd pakpropertyapp
-   ```
+### Quick Start with Docker
+```bash
+# Clone the repository
+git clone <repository-url>
+cd pakpropertyapp
 
-2. **Install dependencies**
-   ```bash
-   npm run install-all
-   ```
+# Copy environment file
+cp env.example .env
+# Edit .env with your configuration
 
-3. **Environment Setup**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+# Start all services with Docker
+docker-compose up -d
 
-4. **Start development servers**
-   ```bash
-   npm run dev
-   ```
+# The application will be available at:
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:5001
+# MongoDB: localhost:27017
+```
 
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+### Docker Services
+- **Frontend**: React development server on port 3000
+- **Backend**: Node.js API server on port 5001
+- **Database**: MongoDB on port 27017
+- **Health Checks**: Automatic service monitoring
+
+### Docker Commands
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild and start
+docker-compose up --build -d
+
+# Access specific service
+docker-compose exec server bash
+docker-compose exec client bash
+```
+
+## 🧪 Testing with Docker
+
+### Run All Tests
+```bash
+# Run complete test suite in Docker
+./test-docker.sh
+
+# Or run specific test suites
+./test-docker.sh backend    # Backend tests only
+./test-docker.sh frontend   # Frontend tests only
+```
+
+### Test Environment
+- **Test Database**: Separate MongoDB instance on port 27018
+- **Test API**: Backend tests on port 5002
+- **Test Frontend**: React tests on port 3001
+- **Coverage Reports**: Generated automatically
+
+## 📚 Documentation
+
+### 📋 Core Documentation
+- **[Testing Guide](TESTING.md)** - Comprehensive testing documentation
+- **[Admin User Management](ADMIN_USER_MANAGEMENT.md)** - Admin features and user management
+- **[Color Scheme Update](COLOR_SCHEME_UPDATE.md)** - UI/UX design system
+- **[Seed Data Summary](SEED_DATA_SUMMARY.md)** - Database seeding and test data
+
+### 🎯 Key Features Documentation
+
+#### Admin Dashboard
+- **User Management**: `/admin/users` - Manage all users
+- **Agent Management**: `/admin/agents` - Manage property agents
+- **Analytics**: `/admin/analytics` - Platform statistics
+- **Dashboard**: `/admin` - Overview and quick actions
+
+#### User Roles
+- **Admin**: Full platform access and user management
+- **Agent**: Property listing and management
+- **Owner**: Property ownership and management
+- **Tenant**: Property browsing and inquiries
+
+## 🛠️ Local Development Setup
+
+### Manual Installation
+```bash
+# Install dependencies
+npm run install-all
+
+# Environment setup
+cp env.example .env
+# Edit .env with your configuration
+
+# Start development servers
+npm run dev
+```
+
+### Environment Variables
+```bash
+# Required variables
+MONGODB_URI=mongodb://localhost:27017/pakproperty
+JWT_SECRET=your-secret-key
+GOOGLE_MAPS_API_KEY=your-google-maps-key
+CLOUDINARY_URL=your-cloudinary-url
+SENDGRID_API_KEY=your-sendgrid-key
+
+# Optional variables
+NODE_ENV=development
+PORT=5001
+CLIENT_URL=http://localhost:3000
+```
 
 ## 📁 Project Structure
 
@@ -67,20 +156,24 @@ pakpropertyapp/
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
 │   │   ├── pages/         # Page components
-│   │   ├── hooks/         # Custom React hooks
-│   │   ├── services/      # API services
+│   │   ├── contexts/      # React contexts
 │   │   ├── utils/         # Utility functions
-│   │   └── styles/        # CSS and styling
+│   │   └── tests/         # Frontend tests
+│   ├── Dockerfile         # Frontend Docker config
 │   └── package.json
 ├── server/                 # Node.js backend
 │   ├── config/            # Configuration files
-│   ├── controllers/       # Route controllers
 │   ├── middleware/        # Custom middleware
 │   ├── models/            # Database models
 │   ├── routes/            # API routes
 │   ├── services/          # Business logic
-│   └── utils/             # Utility functions
-├── docs/                  # Documentation
+│   ├── tests/             # Backend tests
+│   ├── Dockerfile         # Backend Docker config
+│   └── package.json
+├── docker-compose.yml      # Main Docker setup
+├── docker-compose.test.yml # Test Docker setup
+├── test-docker.sh         # Docker test runner
+├── test-runner.sh         # Local test runner
 └── package.json
 ```
 
@@ -89,10 +182,9 @@ pakpropertyapp/
 ### Frontend
 - **React 18** - Modern UI library
 - **React Router** - Client-side routing
-- **Axios** - HTTP client
 - **React Query** - Data fetching and caching
 - **Tailwind CSS** - Utility-first CSS framework
-- **React Hook Form** - Form handling
+- **Framer Motion** - Animations
 - **React Icons** - Icon library
 
 ### Backend
@@ -103,19 +195,19 @@ pakpropertyapp/
 - **JWT** - Authentication
 - **Multer** - File uploads
 - **Cloudinary** - Image storage
-- **Nodemailer** - Email service
 
-### Third-Party Services
-- **Google Maps API** - Location services
-- **Cloudinary** - Image management
-- **SendGrid** - Email delivery
-- **Google Analytics** - User analytics
+### DevOps & Testing
+- **Docker** - Containerization
+- **Docker Compose** - Multi-service orchestration
+- **Jest** - Testing framework
+- **React Testing Library** - Component testing
+- **Supertest** - API testing
 
 ## 🎯 Key Features
 
 ### User Management
 - Secure registration with email verification
-- Role-based access (Owner/Agent, Tenant)
+- Role-based access (Owner/Agent, Tenant, Admin)
 - Profile management with preferences
 - Password reset functionality
 
@@ -131,11 +223,11 @@ pakpropertyapp/
 - Email notifications
 - Internal messaging system
 
-### Localization
-- Bilingual interface (English/Urdu)
-- Pakistani property terminology
-- Local area units (Marla, Kanal, Sq. Ft)
-- Regional formatting and currency
+### Admin Features
+- User management and role assignment
+- Agent verification system
+- Platform analytics and reporting
+- Bulk operations and data export
 
 ## 📊 Analytics & Reporting
 
@@ -143,6 +235,7 @@ pakpropertyapp/
 - Property performance analytics
 - Inquiry tracking and conversion rates
 - Platform usage statistics
+- Agent performance rankings
 
 ## 🔒 Security Features
 
@@ -152,22 +245,28 @@ pakpropertyapp/
 - Input validation
 - XSS protection
 - CSRF protection
+- Role-based access control
 
 ## 🚀 Deployment
 
-### Production Build
+### Production with Docker
 ```bash
-npm run build
-npm start
+# Build production images
+docker-compose -f docker-compose.prod.yml up --build -d
+
+# Or deploy to cloud platforms
+docker-compose -f docker-compose.prod.yml push
 ```
 
-### Environment Variables
-Required environment variables:
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - JWT signing secret
-- `GOOGLE_MAPS_API_KEY` - Google Maps API key
-- `CLOUDINARY_URL` - Cloudinary configuration
-- `SENDGRID_API_KEY` - Email service API key
+### Environment Variables for Production
+```bash
+NODE_ENV=production
+MONGODB_URI=your-production-mongodb-uri
+JWT_SECRET=your-production-secret
+GOOGLE_MAPS_API_KEY=your-production-key
+CLOUDINARY_URL=your-production-cloudinary-url
+SENDGRID_API_KEY=your-production-sendgrid-key
+```
 
 ## 📈 Performance Optimization
 
@@ -176,6 +275,27 @@ Required environment variables:
 - CDN integration for static assets
 - Caching strategies
 - Code splitting and bundle optimization
+- Docker layer caching
+
+## 🧪 Testing
+
+### Test Coverage
+- **Backend**: 80%+ coverage target
+- **Frontend**: 70%+ coverage target
+- **Critical Paths**: 100% coverage
+
+### Running Tests
+```bash
+# Local testing
+./test-runner.sh
+
+# Docker testing
+./test-docker.sh
+
+# Individual test suites
+npm run test:backend
+npm run test:frontend
+```
 
 ## 🤝 Contributing
 
@@ -183,7 +303,8 @@ Required environment variables:
 2. Create a feature branch
 3. Make your changes
 4. Add tests if applicable
-5. Submit a pull request
+5. Run the test suite
+6. Submit a pull request
 
 ## 📄 License
 
@@ -195,4 +316,10 @@ For support and questions, please contact the development team.
 
 ---
 
-**Built with ❤️ for Pakistan's property market** 
+**Built with ❤️ for Pakistan's property market**
+
+### 🔗 Quick Links
+- [Testing Guide](TESTING.md)
+- [Admin User Management](ADMIN_USER_MANAGEMENT.md)
+- [Color Scheme Update](COLOR_SCHEME_UPDATE.md)
+- [Seed Data Summary](SEED_DATA_SUMMARY.md) 
