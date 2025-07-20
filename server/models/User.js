@@ -134,6 +134,12 @@ const userSchema = new mongoose.Schema({
   },
   lockUntil: Date,
 
+  // Saved Properties
+  savedProperties: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Property'
+  }],
+
   // Timestamps
   lastLogin: Date,
   lastActive: Date

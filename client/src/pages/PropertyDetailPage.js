@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../utils/axios';
 import { 
@@ -45,6 +45,7 @@ import toast from 'react-hot-toast';
 const PropertyDetailPage = () => {
   const { id } = useParams();
   const { user, isAuthenticated } = useAuth();
+  const queryClient = useQueryClient();
   const [activeImage, setActiveImage] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
   const [contactForm, setContactForm] = useState({
@@ -84,6 +85,71 @@ const PropertyDetailPage = () => {
       staleTime: 5 * 60 * 1000
     }
   );
+
+  // Check if property is saved
+  const { data: savedProperties } = useQuery(
+    'savedProperties',
+    async () => {
+      if (!isAuthenticated) return [];
+      const response = await api.get('/users/saved-properties');
+      return response.data.data;
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000
+    }
+  );
+
+  // Save property mutation
+  const savePropertyMutation = useMutation(
+    async (propertyId) => {
+      await api.post(`/users/saved-properties/${propertyId}`);
+    },
+    {
+      onSuccess: () => {
+        toast.success('Property saved successfully!');
+        queryClient.invalidateQueries('savedProperties');
+      },
+      onError: (error) => {
+        const message = error.response?.data?.message || 'Failed to save property';
+        toast.error(message);
+      }
+    }
+  );
+
+  // Remove from saved properties mutation
+  const removeFromSavedMutation = useMutation(
+    async (propertyId) => {
+      await api.delete(`/users/saved-properties/${propertyId}`);
+    },
+    {
+      onSuccess: () => {
+        toast.success('Property removed from saved list');
+        queryClient.invalidateQueries('savedProperties');
+      },
+      onError: (error) => {
+        const message = error.response?.data?.message || 'Failed to remove property';
+        toast.error(message);
+      }
+    }
+  );
+
+  // Check if current property is saved
+  const isPropertySaved = savedProperties?.some(saved => saved._id === id);
+
+  // Handle save/unsave property
+  const handleSaveProperty = () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to save properties');
+      return;
+    }
+
+    if (isPropertySaved) {
+      removeFromSavedMutation.mutate(id);
+    } else {
+      savePropertyMutation.mutate(id);
+    }
+  };
 
   // Handle contact form submission
   const handleContactSubmit = async (e) => {
@@ -318,8 +384,17 @@ const PropertyDetailPage = () => {
                 </div>
                 
                 <div className="flex space-x-2">
-                  <button className="p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
-                    <FaHeart />
+                  <button 
+                    onClick={handleSaveProperty}
+                    disabled={savePropertyMutation.isLoading || removeFromSavedMutation.isLoading}
+                    className={`p-3 rounded-full transition-colors ${
+                      isPropertySaved 
+                        ? 'text-red-500 hover:text-red-600 hover:bg-red-50' 
+                        : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                    }`}
+                    title={isPropertySaved ? 'Remove from saved' : 'Save property'}
+                  >
+                    <FaHeart className={isPropertySaved ? 'fill-current' : ''} />
                   </button>
                   <button className="p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
                     <FaShare />

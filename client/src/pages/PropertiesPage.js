@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useSearchParams, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import api from '../utils/axios';
+import toast from 'react-hot-toast';
 import { 
   FaSearch, 
   FaMapMarkerAlt, 
@@ -24,6 +26,8 @@ const DEFAULT_LIMIT = 12;
 
 const PropertiesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated } = useAuth();
+  const queryClient = useQueryClient();
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
@@ -91,6 +95,70 @@ const PropertiesPage = () => {
   const totalPages = propertiesData?.pagination?.pages || 1;
   const currentPage = propertiesData?.pagination?.page || 1;
 
+  // Fetch saved properties to check which ones are saved
+  const { data: savedProperties } = useQuery(
+    'savedProperties',
+    async () => {
+      if (!isAuthenticated) return [];
+      const response = await api.get('/users/saved-properties');
+      return response.data.data;
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000
+    }
+  );
+
+  // Save property mutation
+  const savePropertyMutation = useMutation(
+    async (propertyId) => {
+      await api.post(`/users/saved-properties/${propertyId}`);
+    },
+    {
+      onSuccess: () => {
+        toast.success('Property saved successfully!');
+        queryClient.invalidateQueries('savedProperties');
+      },
+      onError: (error) => {
+        const message = error.response?.data?.message || 'Failed to save property';
+        toast.error(message);
+      }
+    }
+  );
+
+  // Remove from saved properties mutation
+  const removeFromSavedMutation = useMutation(
+    async (propertyId) => {
+      await api.delete(`/users/saved-properties/${propertyId}`);
+    },
+    {
+      onSuccess: () => {
+        toast.success('Property removed from saved list');
+        queryClient.invalidateQueries('savedProperties');
+      },
+      onError: (error) => {
+        const message = error.response?.data?.message || 'Failed to remove property';
+        toast.error(message);
+      }
+    }
+  );
+
+  // Handle save/unsave property
+  const handleSaveProperty = (propertyId) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to save properties');
+      return;
+    }
+
+    const isSaved = savedProperties?.some(saved => saved._id === propertyId);
+    
+    if (isSaved) {
+      removeFromSavedMutation.mutate(propertyId);
+    } else {
+      savePropertyMutation.mutate(propertyId);
+    }
+  };
+
   // Handle filter changes
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
@@ -156,8 +224,21 @@ const PropertiesPage = () => {
           />
         )}
         <div className="absolute top-4 right-4 flex space-x-2">
-          <button className="bg-white/80 hover:bg-white p-2 rounded-full transition-colors">
-            <FaHeart className="text-gray-600" />
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleSaveProperty(property._id);
+            }}
+            disabled={savePropertyMutation.isLoading || removeFromSavedMutation.isLoading}
+            className={`bg-white/80 hover:bg-white p-2 rounded-full transition-colors ${
+              savedProperties?.some(saved => saved._id === property._id) 
+                ? 'text-red-500' 
+                : 'text-gray-600'
+            }`}
+            title={savedProperties?.some(saved => saved._id === property._id) ? 'Remove from saved' : 'Save property'}
+          >
+            <FaHeart className={savedProperties?.some(saved => saved._id === property._id) ? 'fill-current' : ''} />
           </button>
           <Link
             to={`/properties/${property._id}`}
