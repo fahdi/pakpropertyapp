@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    networks:
+      - pakproperty-network
+
+  mongo-express:
+    image: mongo-express:1.0.0
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password123
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:password123@mongo:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password123
+      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - pakproperty-network
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    restart: always
+    ports:
+      - "5001:5001"
+    env_file:
+      - server/.env
+    environment:
+      - MONGODB_URI=mongodb://admin:password123@mongo:27017/pakproperty?authSource=admin
+      - NODE_ENV=production
+      - PORT=5001
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - pakproperty-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://pakproperty.universalcoders.com/api
+    depends_on:
+      - server
+    networks:
+      - pakproperty-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  pakproperty-network:
+    driver: bridge
+
+volumes:
+  mongo_data: 

@@ -1,0 +1,231 @@
+#!/bin/bash
+
+# PakProperty App Deployment Script Template
+# Deploys to YOUR_SUBDOMAIN.YOUR_DOMAIN
+# 
+# IMPORTANT: Before using this script:
+# 1. Copy this file to deploy.sh
+# 2. Update the server configuration below with your actual server details
+# 3. This template file is safe to commit to version control
+
+# Server Configuration - UPDATE THESE VALUES
+SERVER_IP="YOUR_SERVER_IP"
+SERVER_USER="YOUR_SERVER_USER"
+SERVER_PASSWORD="YOUR_SERVER_PASSWORD"
+DOMAIN="YOUR_DOMAIN"
+SUBDOMAIN="YOUR_SUBDOMAIN"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    echo -e "${GREEN}[INFO]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Function to execute remote commands
+execute_remote() {
+    sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_IP" "$1"
+}
+
+# Function to copy files to server
+copy_to_server() {
+    sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no -r "$1" "$SERVER_USER@$SERVER_IP:$2"
+}
+
+print_status "Starting deployment of PakProperty app to $SUBDOMAIN.$DOMAIN"
+
+# Check if required tools are installed
+if ! command -v sshpass &> /dev/null; then
+    print_error "sshpass is not installed. Please install it first."
+    exit 1
+fi
+
+# Test connection to server
+print_status "Testing connection to server..."
+if ! execute_remote "echo 'Connection successful'" &> /dev/null; then
+    print_error "Cannot connect to server. Please check credentials and network."
+    exit 1
+fi
+
+print_status "Connection successful. Proceeding with deployment..."
+
+# Create deployment directory on server
+print_status "Creating deployment directory..."
+execute_remote "mkdir -p /opt/pakproperty"
+
+# Copy docker-compose.yml and related files
+print_status "Copying Docker configuration files..."
+copy_to_server "docker-compose.yml" "/opt/pakproperty/"
+copy_to_server "env.example" "/opt/pakproperty/"
+
+# Copy client and server directories
+print_status "Copying application files..."
+copy_to_server "client/" "/opt/pakproperty/"
+copy_to_server "server/" "/opt/pakproperty/"
+
+# Create production environment file
+print_status "Creating production environment file..."
+execute_remote "cd /opt/pakproperty && cp env.example .env"
+
+# Update environment variables for production
+execute_remote "cd /opt/pakproperty && sed -i 's/NODE_ENV=development/NODE_ENV=production/g' .env"
+execute_remote "cd /opt/pakproperty && sed -i 's/REACT_APP_API_URL=.*/REACT_APP_API_URL=https:\/\/$SUBDOMAIN.$DOMAIN\/api/g' .env"
+
+# Create nginx configuration
+print_status "Creating Nginx configuration..."
+execute_remote "cat > /etc/nginx/sites-available/$SUBDOMAIN.$DOMAIN << 'EOF'
+server {
+    listen 80;
+    server_name $SUBDOMAIN.$DOMAIN;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://\$server_name\$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name $SUBDOMAIN.$DOMAIN;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN.$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN.$DOMAIN/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+
+    # Security headers
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection \"1; mode=block\";
+    add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains\";
+
+    # Client (React app)
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_cache_bypass \$http_upgrade;
+    }
+
+    # API (Node.js backend)
+    location /api {
+        proxy_pass http://localhost:5001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_cache_bypass \$http_upgrade;
+    }
+
+    # MongoDB Express (optional, for admin)
+    location /mongo-express {
+        proxy_pass http://localhost:8081;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+EOF"
+
+# Enable the site
+execute_remote "ln -sf /etc/nginx/sites-available/$SUBDOMAIN.$DOMAIN /etc/nginx/sites-enabled/"
+
+# Install Docker and Docker Compose if not already installed
+print_status "Checking Docker installation..."
+if ! execute_remote "docker --version" &> /dev/null; then
+    print_status "Installing Docker..."
+    execute_remote "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh"
+    execute_remote "usermod -aG docker \$USER"
+fi
+
+if ! execute_remote "docker-compose --version" &> /dev/null; then
+    print_status "Installing Docker Compose..."
+    execute_remote "curl -L \"https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-\$(uname -s)-\$(uname -m)\" -o /usr/local/bin/docker-compose"
+    execute_remote "chmod +x /usr/local/bin/docker-compose"
+fi
+
+# Install Certbot for SSL certificates
+print_status "Installing Certbot for SSL certificates..."
+execute_remote "apt-get update && apt-get install -y certbot python3-certbot-nginx"
+
+# Obtain SSL certificate
+print_status "Obtaining SSL certificate..."
+execute_remote "certbot --nginx -d $SUBDOMAIN.$DOMAIN --non-interactive --agree-tos --email admin@$DOMAIN"
+
+# Build and start the application
+print_status "Building and starting the application..."
+execute_remote "cd /opt/pakproperty && docker-compose down"
+execute_remote "cd /opt/pakproperty && docker-compose build --no-cache"
+execute_remote "cd /opt/pakproperty && docker-compose up -d"
+
+# Wait for services to be ready
+print_status "Waiting for services to be ready..."
+sleep 30
+
+# Test the application
+print_status "Testing application..."
+if execute_remote "curl -f http://localhost:3000" &> /dev/null; then
+    print_status "Frontend is running successfully!"
+else
+    print_warning "Frontend might still be starting up..."
+fi
+
+if execute_remote "curl -f http://localhost:5001/api/health" &> /dev/null; then
+    print_status "Backend API is running successfully!"
+else
+    print_warning "Backend API might still be starting up..."
+fi
+
+# Reload nginx
+execute_remote "systemctl reload nginx"
+
+print_status "Deployment completed!"
+print_status "Your application should be available at: https://$SUBDOMAIN.$DOMAIN"
+print_status "API endpoint: https://$SUBDOMAIN.$DOMAIN/api"
+print_status "MongoDB Express (admin): https://$SUBDOMAIN.$DOMAIN/mongo-express"
+
+# Create a simple health check script
+print_status "Creating health check script..."
+execute_remote "cat > /opt/pakproperty/health-check.sh << 'EOF'
+#!/bin/bash
+cd /opt/pakproperty
+if ! docker-compose ps | grep -q \"Up\"; then
+    echo \"Services are down, restarting...\"
+    docker-compose down
+    docker-compose up -d
+fi
+EOF"
+
+execute_remote "chmod +x /opt/pakproperty/health-check.sh"
+
+# Add to crontab for automatic health checks
+print_status "Setting up automatic health checks..."
+execute_remote "crontab -l 2>/dev/null | { cat; echo \"*/5 * * * * /opt/pakproperty/health-check.sh\"; } | crontab -"
+
+print_status "Deployment script completed successfully!"
+print_status "The application will automatically restart if it goes down." 

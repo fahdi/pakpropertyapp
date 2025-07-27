@@ -98,6 +98,60 @@ docker-compose exec client bash
 ## 📚 Documentation
 
 ### 📋 Core Documentation
+
+### 🚀 Deployment
+
+The application includes comprehensive deployment scripts for production deployment:
+
+#### Deployment Files (Not in Version Control)
+- `deploy.sh` - Main deployment script
+- `setup-server.sh` - Server environment setup
+- `quick-deploy.sh` - Combined setup and deployment
+- `check-status.sh` - Deployment status monitoring
+- `DEPLOYMENT.md` - Detailed deployment guide
+
+#### Template Files (Safe to Commit)
+- `deploy.sh.template` - Template for deployment script
+- `setup-server.sh.template` - Template for server setup
+- `quick-deploy.sh.template` - Template for quick deployment
+- `check-status.sh.template` - Template for status monitoring
+- `DEPLOYMENT_TEMPLATE.md` - Template deployment guide
+
+**⚠️ Security Note**: The actual deployment files contain sensitive server information and are excluded from version control. Use the template files to create your own deployment scripts.
+
+#### Docker Files (Safe to Commit)
+- `docker-compose.yml` - Development Docker configuration
+- `docker-compose.prod.yml` - Production Docker configuration
+- `client/Dockerfile` - React client production build
+- `client/nginx.conf` - Nginx configuration for React app
+
+#### Quick Deployment
+```bash
+# 1. Copy template files and configure server details
+cp deploy.sh.template deploy.sh
+cp setup-server.sh.template setup-server.sh
+cp quick-deploy.sh.template quick-deploy.sh
+cp check-status.sh.template check-status.sh
+
+# 2. Edit the scripts with your server details
+# Update SERVER_IP, SERVER_USER, SERVER_PASSWORD, DOMAIN, SUBDOMAIN
+
+# 3. Run quick deployment
+./quick-deploy.sh
+
+# 4. Check deployment status
+./check-status.sh
+```
+
+#### Deployment Features
+- ✅ **SSL Certificates** (Let's Encrypt)
+- ✅ **Nginx Reverse Proxy**
+- ✅ **Automatic Health Checks**
+- ✅ **Daily Backups**
+- ✅ **Firewall Protection**
+- ✅ **Zero-Downtime Updates**
+
+For detailed deployment instructions, see `DEPLOYMENT_TEMPLATE.md`.
 - **[Testing Guide](TESTING.md)** - Comprehensive testing documentation
 - **[Admin User Management](ADMIN_USER_MANAGEMENT.md)** - Admin features and user management
 - **[Color Scheme Update](COLOR_SCHEME_UPDATE.md)** - UI/UX design system

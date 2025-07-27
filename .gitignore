@@ -99,3 +99,10 @@ jspm_packages/
 .yarn/install-state.gz
 .pnp.*
 
+# Deployment scripts and sensitive files
+deploy.sh
+setup-server.sh
+quick-deploy.sh
+check-status.sh
+DEPLOYMENT.md
+
